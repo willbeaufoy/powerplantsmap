@@ -1,0 +1,65 @@
+@handf: #F2C329;
+
+html {
+	background: @handf;
+}
+
+header {
+	margin-bottom: 25px;
+	background: @handf;
+}
+
+#main {
+	margin-bottom: 20px;
+}
+
+header h1 {
+	font-size: 60px;
+	font-family: 'Source Sans Pro', "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+footer {
+	padding: 10px 0;
+	background: @handf;
+}
+
+footer img {
+	position: relative;
+	top: 3px;
+}
+ 
+.container {
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#ctc a {
+	color: #fff;
+	text-decoration: underline;
+}
+
+main li {
+	margin-bottom: 15px;
+}
+	
+/* Maps */
+
+#uk-map-canvas {
+	width:  900px;
+	height: 700px;
+	margin: 0 auto;
+	border: 2px solid #333;
+}
+
+/* Responsive */
+
+@media (max-width: 480px) {
+	html {
+			-webkit-text-size-adjust: none; /* Prevent font scaling in landscape */
+	}  
+	
+	.container {
+  	width: 95%;
+	}
+}
