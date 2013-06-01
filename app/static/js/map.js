@@ -52,14 +52,14 @@ function onDataFetched(data) {
 		console.log(data[i][1])
 		console.log(data[i][2])
 		console.log(data[i][3])
-	  coordinate = new google.maps.LatLng(data[i][2],data[i][3]);
+	  coordinate = new google.maps.LatLng(data[i][2],data[i][1]);
   iconUrl = DEFAULT_ICON_URL; //console.log('iconUrl'+iconUrl);
-  content = "<strong>" + data[i][1] + "</strong><br><br>"; // Name
-  content += "Type: " + data[i][4] + "<br>"; // Name
-  content += "Max Output: " + data[i][5] + " MW<br>"; // Name
-  content += "Built: " + data[i][6] + "<br>"; // Name
-  content += "Decommission date: " + data[i][7] + "<br>"; // Name
-  content += "Owner: " + data[i][8] + "<br>"; // Name
+  content = "<strong>" + data[i][0] + "</strong><br><br>"; // Name
+  content += "Type: " + data[i][6] + "<br>"; // Name
+  content += "Max Output: " + data[i][7] + " MW<br>"; // Name
+  content += "Built: " + data[i][8] + "<br>"; // Name
+  //content += "Decommission date: " + data[i][7] + "<br>"; // Name
+  //content += "Owner: " + data[i][8] + "<br>"; // Name
   if (iconUrl) {
 		createMarker(coordinate, iconUrl, content);
   }
