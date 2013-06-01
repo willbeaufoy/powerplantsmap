@@ -8,6 +8,17 @@ class Site(db.Model):
     site = db.Column(db.String(64), index = True, unique = True)
     lat = db.Column(db.SmallInteger)
     long = db.Column(db.SmallInteger)
+    type = db.Column(db.String(64))
+    max_output = db.Column(db.String(64))
+    built = db.Column(db.String(64))
+    decommission_date = db.Column(db.String(64))
+    owner = db.Column(db.String(64))
 
+#     StationName = db.Column(db.String(64))
+#     Fuel = db.Column(db.String(64))
+#     Installed = db.Column(db.String(64))
+#     Yearof = db.Column(db.String(64))
+#     CompanyName = db.Column(db.String(64))
+		
     def __repr__(self):
         return '<Site %r>' % (self.site)  
