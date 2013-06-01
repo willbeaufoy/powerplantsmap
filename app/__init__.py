@@ -7,6 +7,7 @@ app = Flask(__name__)
 app.config.from_object('config')
 app.config['SECRET_KEY'] = 'ghfdsadfghgjfds'
 db = SQLAlchemy(app)	
+table = 'wiki_fossil'
 
 @app.before_request
 def before_request():
@@ -22,10 +23,10 @@ def json_data():
     # get number of items from the javascript request
     nitems = request.args.get('nitems', 2)
     # query database
-    cursor = g.db.execute('select * from site')
+    cursor = g.db.execute('select Name, Lng, Lat, Type, Totalcapacity, Opened from wiki_fossil')
     # return json
-    json_data = json.dumps(dict(('%d' % s, site)
-                        for s, site in enumerate(cursor.fetchall(), start=1)))
+    json_data = json.dumps(dict(('%d' % s, wiki_fossil)
+                        for s, wiki_fossil in enumerate(cursor.fetchall(), start=1)))
     callback = request.args.get('callback')
     #json_data = json.dumps(json_data)
     return '{0}({1})'.format(callback, json_data)
