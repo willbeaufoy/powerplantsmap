@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id="map" class="map_canvas"></div>
+<div id="panel">
+    <ul>
+        {% for type in types %}
+            <li>{{type.name}}<img src="{{type.markerurl}}"></li>
+        {% endfor %}
+    </ul>
+    <div id="select-location" class="">
+        <form id='select-location'>
+            <input id='select-location-input' type='text' placeholder="Enter location">
+            <button id='select-location-submit' type='submit' class="btn btn-inverse btn-large"><i class="icon-large icon-white icon-search"></i></button>
+        </form>
+    </div>
+    <div id="filter">
+        <h2>Types</h2>
+        <ul id="all">
+            <li><strong>All </strong><input type="checkbox" id="all" name="all-type-filter" class="all-type-filter" checked ></input>
+                <ul id = "types">
+                {% for type in types %}
+                    <li><strong>{{type.name}} </strong><input type="checkbox" id="{{type.id}}" name="{{type.name}}-filter" class="filter type-filter btn" checked ></input></li>
+                {% endfor %}
+                </ul>
+            </li>
+        </ul>
+        <h2>Countries</h2>
+        <ul id="all">
+            <li><strong>All </strong><input type="checkbox" id="all" name="all-country-filter" class="all-country-filter" checked ></input>
+                <ul id = "countries">
+                {% for country in countries %}
+                    <li><strong>{{country.name}} </strong><input type="checkbox" id="{{country.id}}" name="{{country.name}}-filter" class="filter country-filter btn" checked ></input></li>
+                {% endfor %}
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <h2>Data sources</h2>
+    <ul>
+        {% for country in countries %}
+        <li><strong>{{country.name}}</strong>:
+            <ul>
+            {% for data_source in country.data_sources %}
+                <li></li><a href="{{data_source.url}}">{{data_source.name}}</a></li>
+            {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+    <!--<div id="charts"></div>-->
+</div>
+<div id="toggle-panel" class="arrow-left"></div>
+{% endblock %}

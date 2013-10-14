@@ -1,0 +1,9 @@
+*.pyc
+.DS_Store
+data
+run.py
+*.log
+config.py
+db-setup.py
+.git
+.git/*

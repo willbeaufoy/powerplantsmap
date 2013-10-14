@@ -1,0 +1,16 @@
+<a href="/admin">Admin home</a>
+ | <a href="/admin/type-input">Type input</a>
+ | <a href="/admin/subtype-input">Subtype input</a>
+ | <a href="/admin/country-input">Country input</a>
+ | <a href="/admin/owner-input">Owner input</a>
+ | <a href="/admin/site-input">Site input</a>
+ | <a href="/admin/data-source-input">Data source input</a>
+<!-- 
+{% for menu_item in menu_items %}
+ | <a href="/admin/{{menu_item.name}}-input">{{menu_item.name}}</a>
+{% endfor %}
+ -->
+{% if g.user.is_authenticated() %}
+| <a href="{{ url_for('logout') }}">Logout</a>
+{% endif %}
+<hr>

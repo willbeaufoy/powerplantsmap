@@ -1,23 +1,27 @@
 $(document).ready(function() {
-	var adr = ["<a href=\"mai", "lto:", "will@wil", "lbeaufoy.net\">wil", "l@willbea", "ufoy.net</a>"]
-	$('#ctc').click(function() {
-		var $this = $(this)
-		$this.html($this.html() == adr.join('') ? 'Get in touch' : adr.join(''))
-	});
-})
+    $('#toggle-panel').click(function() {
+        $('#panel').toggle()
+        $(this).toggleClass('arrow-left arrow-right')
+    })
 
-$(document).ready(function() {
-	$('a[data-toggle="collapse"] i').click(function() {
-		var hidden = 'icon-chevron-right'
-		var shown = 'icon-chevron-down'
-		console.log($(this))
-		if($(this).hasClass(hidden)) {
-			$(this).addClass(shown)
-			$(this).removeClass(hidden)
-		}
-		else {
-			$(this).addClass(hidden)
-			$(this).removeClass(shown)
-		}
-	});
-})
+    $(':checkbox.all-country-filter').change(function() {
+        console.log(this.checked)
+        if(this.checked) {
+            $(':checkbox.continent-filter').prop("checked", true)
+            $(':checkbox.country-filter').prop("checked", true)
+        }
+        else {
+            $(':checkbox.continent-filter').prop("checked", false)
+            $(':checkbox.country-filter').prop("checked", false)
+        }
+    })
+
+    $(':checkbox.all-type-filter').change(function() {
+        console.log(this.checked)
+        if(this.checked) {
+            $(':checkbox.type-filter').prop("checked", true)
+        }
+        else {
+            $(':checkbox.type-filter').prop("checked", false)
+        }
+})})

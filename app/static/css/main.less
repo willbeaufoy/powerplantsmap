@@ -1,65 +1,112 @@
 @handf: #F2C329;
+@whitey:#fff;
 
 html {
-	background: @handf;
+    height:100%;
+    background: @handf;
+}
+
+body {
+    height:100%;
+    //overflow:hidden;
 }
 
 header {
-	margin-bottom: 25px;
-	background: @handf;
+    //margin-bottom: 25px;
+    padding: 0 25px;
+    background: @handf;
+    //border-bottom: 2px solid #333;
 }
 
 #main {
-	margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 header h1 {
-	font-size: 60px;
-	font-family: 'Source Sans Pro', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 60px;
+    font-family: 'Source Sans Pro', "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 footer {
-	padding: 10px 0;
-	background: @handf;
+    padding: 10px 0;
+    background: @handf;
 }
 
 footer img {
-	position: relative;
-	top: 3px;
+    position: relative;
+    top: 3px;
 }
- 
+
 .container {
-	width: 1000px;
-	margin-left: auto;
-	margin-right: auto;
+    //width: 1000px;
+    //margin-left: auto;
+    //margin-right: auto;
 }
 
 #ctc a {
-	color: #fff;
-	text-decoration: underline;
+    color: #fff;
+    text-decoration: underline;
 }
 
 main li {
-	margin-bottom: 15px;
+    margin-bottom: 15px;
 }
-	
+
 /* Maps */
 
-#uk-map-canvas {
-	width:  900px;
-	height: 700px;
-	margin: 0 auto;
-	border: 2px solid #333;
+#map {
+    width: 100%;
+    height: 1000px;
+}
+
+#map div {
+    line-height:normal;
+}
+
+/* Panel */
+
+#panel {
+    width:300px;
+    position:absolute;
+    top:114px;
+    background:@whitey;
+}
+
+#panel ul li img {
+    height:20px;
+}
+
+#toggle-panel {
+    cursor:pointer;
+}
+
+.arrow-left {
+    width:0;
+    height:0;
+    border-right:30px solid black;
+    border-top:30px solid transparent;
+    border-bottom:30px solid transparent;
+    float:right;
+    position:fixed;
+    top:50%;
+    left:270px;
+}
+
+.arrow-right {
+    width:0;
+    height:0;
+    border-left:30px solid black;
+    border-top:30px solid transparent;
+    border-bottom:30px solid transparent;
+    float:right;
+    position:fixed;
+    top:50%;
 }
 
 /* Responsive */
 
 @media (max-width: 480px) {
-	html {
-			-webkit-text-size-adjust: none; /* Prevent font scaling in landscape */
-	}  
-	
-	.container {
-  	width: 95%;
-	}
+    html {
+            -webkit-text-size-adjust: none; /* Prevent font scaling in landscape */
+    }
 }

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+   {% include 'admin/admin-subheader.html' %}
+   <h2>{{title}}</h2>
+   <br>
+	<span id="addRow" class="btn btn-success">Add row</span>
+	<span id="removeRow" class="btn btn-success">Remove row</span>
+	<span id="required-explanation">* = Required Field</span>
+   <form action="" method="post" id="country-input-form" name="country-input">
+   {{form.hidden_tag()}}
+      <table id="country-input" class="table-condensed">
+      	<thead>
+				<tr>
+					{% for field in form.country[0] %}
+						{% if not loop.first %}
+							<td>{{ field.label }}</td>
+						{% endif %}
+					{% endfor %}
+				</tr>
+         </thead>
+         <tbody>
+            {% for country in form.country %}
+               <tr>
+                  {% for field in country %}
+                     {% if loop.first %}
+                        {{ field }}
+                        {% for error in country.errors[field.short_name] %}
+                           {{ error }}
+                        {% endfor %}
+                     {% else %}
+                        <td>
+                           {{ field }}
+                           {% for error in country.errors[field.short_name] %}
+                              <span style="color: red;">{{ error }}</span>
+                           {% endfor %}
+                        </td>
+                     {% endif %}
+                  {% endfor %}
+               </tr>
+            {% endfor %}
+			</tbody>
+   	</table>
+		{{ form.submit }}
+	   </form>
+		<span id="successmessage" class="{{messageclass}}">{{message}}</span>
+	<hr>
+</div>
+{% endblock %}

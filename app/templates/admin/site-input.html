@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+   {% include 'admin/admin-subheader.html' %}
+   <h2>{{title}}</h2>
+   <div>If geocoding fails for any location, you must find the coordinates manually. Try <a href="http://www.latlong.net/">latlong.net</a>.</div>
+   <br>
+	<span id="addRow" class="btn btn-success">Add row</span>
+	<span id="removeRow" class="btn btn-success">Remove row</span>
+	<span id="required-explanation">* = Required Field</span>
+   <form action="" method="post" id="site-input-form" name="site-input">
+   {{form.hidden_tag()}}
+      <table id="site-input" class="table-condensed">
+      	<thead>
+				<tr>
+					{% for field in form.site[0] %}
+						{% if not loop.first %}
+							<td>{{ field.label }}</td>
+						{% endif %}
+					{% endfor %}
+				</tr>
+         </thead>
+         <tbody>
+            {% for site in form.site %}
+               <tr>
+                  {% for field in site %}
+                     {% if loop.first %}
+                        {{ field }}
+                        {% for error in site.errors[field.short_name] %}
+                           {{ error }}
+                        {% endfor %}
+                     {% else %}
+                        <td>
+                           {{ field }}
+                           {% for error in site.errors[field.short_name] %}
+                              <span style="color: red;">{{ error }}</span>
+                           {% endfor %}
+                        </td>
+                     {% endif %}
+                  {% endfor %}
+               </tr>
+            {% endfor %}
+			</tbody>
+   	</table>
+		{{ form.submit }}
+	   </form>
+		<span id="successmessage" class="{{messageclass}}">{{message}}</span>
+	<hr>
+</div>
+{% endblock %}

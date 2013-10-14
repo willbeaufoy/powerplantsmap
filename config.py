@@ -1,5 +1,17 @@
 import os
-basedir = os.path.abspath(os.path.dirname(__file__))
 
-SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
-SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
+CSRF_ENABLED = True
+SECRET_KEY = 'asgd7568hgvxcv--=-'
+
+dbhost = 'localhost'
+dbname = 'energy_map'
+dbuser = 'energy_map'
+dbpass = 'cows masticate thoroughly'
+SQLALCHEMY_DATABASE_URI = 'mysql://' + dbuser + ':' + dbpass + '@' + dbhost + '/' + dbname
+
+baseurl = 'http://localhost:5000/'
+markersurl = baseurl + 'static/img/markers/'
+
+apppath = os.path.dirname(os.path.abspath(__file__)) + '/app/'
+markerspath = apppath + 'static/img/markers/'
+
