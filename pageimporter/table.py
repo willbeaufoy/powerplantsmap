@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import re
 import logging
 
@@ -177,8 +175,7 @@ class WikiEnergyTable(object):
                 site.url = row['url'] if row['url'] else ''
                 site.country_id = self.country_id
                 site.data_source_id = self.source_id
-                db.session.add(site)
-                #cursor.execute("""INSERT INTO site (type_id, subtype_id, country_id, data_source_id, name, capacity, latitude, longitude, owner_name, url) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", (site.type_id, site.subtype_id, site.country_id, site.source_id, site.name.encode('utf-8'), site.capacity, site.latitude, site.longitude, site.owner_name, site.url))
+                db.session.add(site)               
             except:
                 logging.exception('Exception hit in save_data() on ' + 'name')
         db.session.commit()
