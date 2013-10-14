@@ -1,4 +1,10 @@
-App requires a config.py in root containing the following:
+## App to scrape power plant data from wikipedia and display it on a map
+
+* List of current data sources included is in pageimporter/pageimporter.py
+* To check all sources and update them if they've changed run ./import_data.py update
+* To force update of one or many sources run ./import_data.py args where args can be 'all', or one or more country ids (from the PageImporter.pages dictionary)
+
+App requires a config.py in root containing the following in order to save and display data:
 
     import os
 
