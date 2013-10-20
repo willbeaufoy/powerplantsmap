@@ -1,4 +1,4 @@
-## App to scrape power plant data from wikipedia and display it on a map
+### App to scrape power plant data from wikipedia and display it on a map
 
 * List of current data sources included is in pageimporter/pageimporter.py
 * To check all sources and update them if they've changed run ./import_data.py update
