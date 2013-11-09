@@ -245,14 +245,60 @@ $(document).ready(function() {
         }
     })
     
+    $.ajax({
+        url: 'http://enipedia.tudelft.nl/sparql',
+        type: 'POST', 
+        data: {
+            query: "BASE <http://enipedia.tudelft.nl/wiki/>\n" + 
+                "PREFIX prop: <http://enipedia.tudelft.nl/wiki/Property:>\n" + 
+                "PREFIX cat: <http://enipedia.tudelft.nl/wiki/Category:>\n" + 
+                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
+                "PREFIX fn: <http://www.w3.org/2005/xpath-functions#>\n" + 
+                "select distinct(substr(str(?ft),33) as ?fuel_type) where {\n" + 
+                "  ?ppl rdf:type cat:Powerplant .\n" + 
+                "  ?ppl prop:Fuel_type ?ft .\n" + 
+                "} order by ?fuel_type",
+            output: "json" 
+        },
+        dataType: 'jsonp',
+        success: function(data) {
+            //c(data)
+            var fuel_types_select = document.getElementById('fuel_types')
+            //c(fuel_types_select)
+            var option = document.createElement('option')
+            option.appendChild(document.createTextNode(""))
+            fuel_types_select.appendChild(option)
+            var fuel_types_options = data.results.bindings
+            for (i = 0; i < fuel_types_options.length; i++) {
+                c(fuel_types_options[i].fuel_type.value)
+                var option = document.createElement('option')
+                // if (fuel_types_options[i].fuel_type.value == queryString["enipedia_fuel_type"])
+//                     opt.setAttribute("selected", "true")
+                option.setAttribute("value", fuel_types_options[i].fuel_type.value)
+                option.appendChild(document.createTextNode(fuel_types_options[i].fuel_type.value))
+                fuel_types_select.appendChild(option)
+            } 
+        }
+    })
+    
     $("select#countries").change(function() {
         selected_countries = []
         selected_types = []
         $("select#countries option:selected").each(function() {   
             selected_countries.push($(this).val())
         })
-        c(selected_countries)
+        //c(selected_countries)
         fetchData(selected_countries, selected_types)
+    })
+    
+    $("select#fuel_types").change(function() {
+        selected_fuel_types = []
+        selected_types = []
+        $("select#fuel_types option:selected").each(function() {   
+            selected_fuel_types.push($(this).val())
+        })
+        //c(selected_fuel_types)
+        fetchData(selected_fuel_types, selected_types)
     })
 
     $(":checkbox.filter").change(function() {
@@ -266,13 +312,13 @@ $(document).ready(function() {
                 selected_countries.push(this.id)
             }
         })
-        var selected_types = []
+        var selected_fuel_types = []
         $(':checkbox.type-filter').each(function() {
             if($(this).prop("checked") == true) {
-                selected_types.push(this.id)
+                selected_fuel_types.push(this.id)
             }
         })
-        fetchData(selected_countries, selected_types)
+        fetchData(selected_countries, selected_fuel_types)
         map.markers = markers
         //addZoomListeners()
         google.maps.event.addListener(map, 'click', close_infowindow)
