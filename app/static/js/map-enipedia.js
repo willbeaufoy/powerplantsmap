@@ -82,109 +82,109 @@ function createMarker (type, coordinate, iconurl, title, content) {
     })
 }
 
-function fetchData(continent_ids, country_ids, fuel_types) {
+function fetchData(continents, countries, fuel_types) {
 
     currentId = 0
     markers = {}
 
-    //Construct the URL
-    // var url = [baseurl + 'sites'];
-//     url.push('?');
-//     for(var n in country_ids) {
-//         url.push('&country_id=' + country_ids[n])
-//     }
-//     for(var n in type_ids) {
-//         url.push('&type_id=' + type_ids[n])
-//     }
-//     url.push('&callback=?');
-// 
-//     console.log(url.join(''))
-
     var continents_query = ''
     var countries_query = ''
     var fuel_types_query = ''
-
-    /* Old query version */
-
-    if(continent_ids[0] != 'All' && continent_ids[0] != 'None') {
-        continents_query = "+++++%3Fplant+prop%3AContinent+a%3A" + continent_ids[0] + "+.%0D%0A"
-    }
-
-    if(country_ids[0] != 'All' && country_ids[0] != 'None') {
-        countries_query = "+++++%3Fplant+prop%3ACountry+a%3A" + country_ids[0] + "+.%0D%0A"
-    }
-    c(fuel_types[0])
-    if(fuel_types[0] != 'All' && fuel_types[0] != 'None') {
-        fuel_types_query = "+++++FILTER%28"
-        for(var n = 0; n < fuel_types.length; n++) {
-            if(n > 0) {
-                fuel_types_query += "+%7C%7C+"
-            }
-            fuel_types_query += "%3Ffuel_used+%3D+%22" + fuel_types[n] + "%22"
-        }
-        fuel_types_query += "%29+.%0D%0A"
-        
-        c(fuel_types_query)
-    }
-        
-    var url = "http://enipedia.tudelft.nl/sparql/?default-graph-uri=&query=BASE+%3Chttp%3A%2F%2Fenipedia.tudelft.nl%2Fwiki%2F%3E%0D%0APREFIX+a%3A+%3Chttp%3A%2F%2Fenipedia.tudelft.nl%2Fwiki%2F%3E%0D%0APREFIX+prop%3A+%3Chttp%3A%2F%2Fenipedia.tudelft.nl%2Fwiki%2FProperty%3A%3E%0D%0APREFIX+cat%3A+%3Chttp%3A%2F%2Fenipedia.tudelft.nl%2Fwiki%2FCategory%3A%3E%0D%0APREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0D%0APREFIX+rdf%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0D%0Aselect+%3Fplant_name+%3Flatitude+%3Flongitude+%3Ffuel_used+%3FOutputMWh+%3Felec_capacity_MW+%3Fwikipedia_page+%3Fyear_built+%3Fowner_company+%3Fpower_plant_type+where+%7B%0D%0A" + continents_query + countries_query + fuel_types_query + "+++++%3Fplant+rdf%3Atype+cat%3APowerplant+.+%0D%0A+++++%3Fplant+rdfs%3Alabel+%3Fplant_name+.+%0D%0A+++++%3Fplant+prop%3ALatitude+%3Flatitude+.+%0D%0A+++++%3Fplant+prop%3ALongitude+%3Flongitude+.+%0D%0A+++++OPTIONAL%7B%3Fplant+prop%3AFuel_type+%3Ffuel_type+.%0D%0A++++++++++++++%3Ffuel_type+rdfs%3Alabel+%3Ffuel_used+%7D+.%0D%0A+++++OPTIONAL%7B%3Fplant+prop%3AWikipedia_page+%3Fwikipedia_page+%7D+.%0D%0A+++++OPTIONAL%7B%3Fplant+prop%3AYear_built+%3Fyear_built+%7D+.%0D%0A+++++OPTIONAL%7B%3Fplant+prop%3AOwner_company+%3Fowner_company+%7D+.%0D%0A+++++OPTIONAL%7B%3Fplant+prop%3APower_plant_type+%3Fpower_plant_type+%7D+.+%0D%0A+++++%3Fplant+prop%3AAnnual_Energyoutput_MWh+%3FOutputMWh+.+%0D%0A+++++OPTIONAL%7B%3Fplant+prop%3AGeneration_capacity_electrical_MW+%3Felec_capacity_MW+%7D.+%0D%0A%7D+order+by+%3Fplant+%3Ffuel_type&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on"
-
-    /* End old query version */
     
-    /* New query version */
-    
-    // if(continent_ids[0] != 'All' && continent_ids[0] != 'None') {
-//         continents_query = "?plant prop:Continent a:" + continent_ids[0] + " . \n"
+    // var old_style_continents_query = ''
+//     var old_style_countries_query = ''
+//     var old_style_fuel_types_query = ''
+// 
+//  if(continent_ids[0] != 'All' && continent_ids[0] != 'None') {
+//         old_style_continents_query = "+++++%3Fplant+prop%3AContinent+a%3A" + continent_ids[0] + "+.%0D%0A"
 //     }
 // 
 //     if(country_ids[0] != 'All' && country_ids[0] != 'None') {
-//         countries_query = "     ?plant prop:Country a:" + country_ids[0] + " . \n"
+//         old_style_countries_query = "+++++%3Fplant+prop%3ACountry+a%3A" + country_ids[0] + "+.%0D%0A"
 //     }
 //     c(fuel_types[0])
 //     if(fuel_types[0] != 'All' && fuel_types[0] != 'None') {
-//         fuel_types_query = "     FILTER("
-//         for(var n = 0; n < fuel_types.length; n  ) {
+//         old_style_fuel_types_query = "+++++FILTER%28"
+//         for(var n = 0; n < fuel_types.length; n++) {
 //             if(n > 0) {
-//                 fuel_types_query  = " || "
+//                 old_style_fuel_types_query += "+%7C%7C+"
 //             }
-//             fuel_types_query  = "?fuel_used %3D (" + fuel_types[n] + "%22"
+//             old_style_fuel_types_query += "%3Ffuel_used+%3D+%22" + fuel_types[n] + "%22"
 //         }
-//         fuel_types_query  = ") . "
+//         old_style_fuel_types_query += "%29+.%0D%0A"
 //         
-//         c(fuel_types_query)
+//         c(old_style_fuel_types_query)
 //     }
+//         
+//     var old_style_url = "http://enipedia.tudelft.nl/sparql/?default-graph-uri=&query=BASE+%3Chttp%3A%2F%2Fenipedia.tudelft.nl%2Fwiki%2F%3E%0D%0APREFIX+a%3A+%3Chttp%3A%2F%2Fenipedia.tudelft.nl%2Fwiki%2F%3E%0D%0APREFIX+prop%3A+%3Chttp%3A%2F%2Fenipedia.tudelft.nl%2Fwiki%2FProperty%3A%3E%0D%0APREFIX+cat%3A+%3Chttp%3A%2F%2Fenipedia.tudelft.nl%2Fwiki%2FCategory%3A%3E%0D%0APREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0D%0APREFIX+rdf%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0D%0Aselect+%3Fplant_name+%3Flatitude+%3Flongitude+%3Ffuel_used+%3FOutputMWh+%3Felec_capacity_MW+%3Fwikipedia_page+%3Fyear_built+%3Fowner_company+%3Fpower_plant_type+where+%7B%0D%0A" + old_style_continents_query + old_style_countries_query + old_style_fuel_types_query + "+++++%3Fplant+rdf%3Atype+cat%3APowerplant+.+%0D%0A+++++%3Fplant+rdfs%3Alabel+%3Fplant_name+.+%0D%0A+++++%3Fplant+prop%3ALatitude+%3Flatitude+.+%0D%0A+++++%3Fplant+prop%3ALongitude+%3Flongitude+.+%0D%0A+++++OPTIONAL%7B%3Fplant+prop%3AFuel_type+%3Ffuel_type+.%0D%0A++++++++++++++%3Ffuel_type+rdfs%3Alabel+%3Ffuel_used+%7D+.%0D%0A+++++OPTIONAL%7B%3Fplant+prop%3AWikipedia_page+%3Fwikipedia_page+%7D+.%0D%0A+++++OPTIONAL%7B%3Fplant+prop%3AYear_built+%3Fyear_built+%7D+.%0D%0A+++++OPTIONAL%7B%3Fplant+prop%3AOwner_company+%3Fowner_company+%7D+.%0D%0A+++++OPTIONAL%7B%3Fplant+prop%3APower_plant_type+%3Fpower_plant_type+%7D+.+%0D%0A+++++%3Fplant+prop%3AAnnual_Energyoutput_MWh+%3FOutputMWh+.+%0D%0A+++++OPTIONAL%7B%3Fplant+prop%3AGeneration_capacity_electrical_MW+%3Felec_capacity_MW+%7D.+%0D%0A%7D+order+by+%3Fplant+%3Ffuel_type&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on"
+//     
+//     c(old_style_url)
     
-    // var url = "http://enipedia.tudelft.nl/sparql/?default-graph-uri="
-//     
-//     var query = "&query=BASE <http://enipedia.tudelft.nl/wiki/>\n" +
-//         "PREFIX a: <http://enipedia.tudelft.nl/wiki/>%0D%0APREFIX prop: <http://enipedia.tudelft.nl/wiki/Property:>\n" +
-//         "PREFIX cat: <http://enipedia.tudelft.nl/wiki/Category:>\n" +
-//         "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
-//         "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
-//         "select ?plant_name ?latitude ?longitude ?fuel_used ?OutputMWh ?elec_capacity_MW ?wikipedia_page ?year_built ?owner_company ?power_plant_type where { \n" +
-//             continents_query +
-//             countries_query +
-//             "?plant rdf:type cat:Powerplant . \n" +
-//             "?plant rdfs:label ?plant_name . \n" +
-//             "?plant prop:Latitude ?latitude . \n" +
-//             "?plant prop:Longitude ?longitude . \n" +
-//              "OPTIONAL{?plant prop:Fuel_type ?fuel_type . \n" +
-//              "?fuel_type rdfs:label ?fuel_used } . \n" +
-//              "OPTIONAL{?plant prop:Wikipedia_page ?wikipedia_page } . \n" +
-//               "OPTIONAL{?plant prop:Year_built ?year_built } . \n" +
-//                    "OPTIONAL{?plant prop:Owner_company ?owner_company } . \n" +
-//                         "OPTIONAL{?plant prop:Power_plant_type ?power_plant_type } . \n" +
-//                              "?plant prop:Annual_Energyoutput_MWh ?OutputMWh . \n" +
-//                                   "OPTIONAL{?plant prop:Generation_capacity_electrical_MW ?elec_capacity_MW }. \n" +
-//                                   "} order by ?plant ?fuel_type&format=application/sparql-results+json&timeout=0&debug=on"
-//     c(url)
-//     c(encodeURIComponent(query))
-//     
-//     query = encodeURIComponent(query)
+    c('here')
+    c(continents)
+    c(countries)
+    c(fuel_types)
+    c(fuel_types.length)
+    
+    if(continents[0] != 'All' && continents[0] != 'None') {
+        continents_query = "?plant prop:Continent a:" + continents[0] + " . \n"
+        c('continents if')
+    }
+    
+    c('after conts if')
+
+    if(countries[0] != 'All' && countries[0] != 'None') {
+        countries_query = "     ?plant prop:Country a:" + countries[0] + " . \n"
+        c('cunts if')
+    }
+
+    if(fuel_types[0] != 'All' && fuel_types[0] != 'None') {
+        c('ftypes if')
+        fuel_types_query = "     FILTER("
+        for(var n = 0; n < fuel_types.length; n++) {
+            if(n > 0) {
+                fuel_types_query += " || "
+            }
+            fuel_types_query += "?fuel_used = '" + fuel_types[n] + "'"
+        }
+        fuel_types_query += ") . "
+        
+        c(fuel_types_query)
+    }
+    
+    var url = "http://enipedia.tudelft.nl/sparql/?default-graph-uri=&query="
+    
+    var query = "BASE <http://enipedia.tudelft.nl/wiki/>\n" +
+        "PREFIX a: <http://enipedia.tudelft.nl/wiki/>\n" +
+        "PREFIX prop: <http://enipedia.tudelft.nl/wiki/Property:>\n" +
+        "PREFIX cat: <http://enipedia.tudelft.nl/wiki/Category:>\n" +
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+        "select ?plant_name ?latitude ?longitude ?fuel_used ?OutputMWh ?elec_capacity_MW ?wikipedia_page ?year_built ?owner_company ?power_plant_type where { \n" +
+            continents_query +
+            countries_query +
+            fuel_types_query +
+            "?plant rdf:type cat:Powerplant . \n" +
+            "?plant rdfs:label ?plant_name . \n" +
+            "?plant prop:Latitude ?latitude . \n" +
+            "?plant prop:Longitude ?longitude . \n" +
+             "OPTIONAL{?plant prop:Fuel_type ?fuel_type . \n" +
+             "?fuel_type rdfs:label ?fuel_used } . \n" +
+             "OPTIONAL{?plant prop:Wikipedia_page ?wikipedia_page } . \n" +
+              "OPTIONAL{?plant prop:Year_built ?year_built } . \n" +
+                   "OPTIONAL{?plant prop:Owner_company ?owner_company } . \n" +
+                        "OPTIONAL{?plant prop:Power_plant_type ?power_plant_type } . \n" +
+                             "?plant prop:Annual_Energyoutput_MWh ?OutputMWh . \n" +
+                                  "OPTIONAL{?plant prop:Generation_capacity_electrical_MW ?elec_capacity_MW }. \n" +
+                                  "} order by ?plant ?fuel_type"
+    //c(url)
+    //c(encodeURIComponent(query))
+    
+    query = encodeURIComponent(query)
 
 
     // Send the JSONP request using jQuery
-    var jqxhr = $.getJSON(url + "&callback=?", function(data) {
+    var jqxhr = $.getJSON(url + query + "&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on&callback=?", function(data) {
         //c(data)
     })
         .done(function(data) {
@@ -434,7 +434,7 @@ $(document).ready(function() {
             
             for (i = 0; i < fuel_types.length; i++) {
                 for(cat in fuel_types_categories) {
-                    c(fuel_types_categories[cat])
+                    //c(fuel_types_categories[cat])
                     if(fuel_types_categories[cat].indexOf(fuel_types[i].fuel_type.value) > -1) {
                         var parent_fuel_type = $('ul.fuel_types #' + cat + ' ul')
                         break
@@ -460,20 +460,20 @@ $(document).ready(function() {
         selected_continents = []
         selected_countries = []
         selected_fuel_types = []
-        c($(this))
+        //c($(this))
         if($(this).attr('id') == "continents") {
-            $("select#countries option[value=None]").attr('selected', true)    
+            $("select#countries option[value=None]").attr('selected', true)
         }
         else if($(this).attr('id') == "countries") {
             $("select#continents option[value=None]").attr('selected', true)
         }
         
         $("select#continents option:selected").each(function() {
-            c($(this).val())
+            //c($(this).val())
             selected_continents.push($(this).val())
         })
         $("select#countries option:selected").each(function() {
-            c($(this).val())
+            //c($(this).val())
             selected_countries.push($(this).val())
         })
         
@@ -481,13 +481,14 @@ $(document).ready(function() {
             selected_fuel_types = ['All']
         }
         else {
-            $("input.l3:checked").each(function() {   
+            $("input.l3:checked").each(function() {
+                c('yes')
                 selected_fuel_types.push($(this).attr("name"))
+                c(selected_fuel_types)
             })
+            c('after each')
         }
-        c(selected_continents)
-        c(selected_countries)
-        c(selected_fuel_types)
+        c('before')
         fetchData(selected_continents, selected_countries, selected_fuel_types)
     })
     
@@ -524,42 +525,42 @@ $(document).ready(function() {
 //         fetchData(selected_countries, selected_fuel_types)
 //     })
     
-    $("select#fuel_types").change(function() {
-        selected_countries = []
-        selected_fuel_types = []
-        $("select#fuel_types option:selected").each(function() {   
-            selected_fuel_types.push($(this).val())
-        })
-        $("select#countries option:selected").each(function() {   
-            selected_countries.push($(this).val())
-        })
-        c(selected_countries)
-        c(selected_fuel_types)
-        fetchData(selected_countries, selected_fuel_types)
-    })
+//     $("select#fuel_types").change(function() {
+//         selected_countries = []
+//         selected_fuel_types = []
+//         $("select#fuel_types option:selected").each(function() {   
+//             selected_fuel_types.push($(this).val())
+//         })
+//         $("select#countries option:selected").each(function() {   
+//             selected_countries.push($(this).val())
+//         })
+//         //c(selected_countries)
+//         //c(selected_fuel_types)
+//         fetchData(selected_countries, selected_fuel_types)
+//     })
 
-    $(":checkbox.filter").change(function() {
-        for(var key in markers) {
-            var marker = markers[key]
-                marker.setMap(null)
-        }
-        var selected_countries = []
-        $(':checkbox.country-filter').each(function() {
-            if($(this).prop("checked") == true) {
-                selected_countries.push(this.id)
-            }
-        })
-        var selected_fuel_types = []
-        $(':checkbox.type-filter').each(function() {
-            if($(this).prop("checked") == true) {
-                selected_fuel_types.push(this.id)
-            }
-        })
-        fetchData(selected_countries, selected_fuel_types)
-        map.markers = markers
-        //addZoomListeners()
-        google.maps.event.addListener(map, 'click', close_infowindow)
-    })
+    // $(":checkbox.filter").change(function() {
+//         for(var key in markers) {
+//             var marker = markers[key]
+//                 marker.setMap(null)
+//         }
+//         var selected_countries = []
+//         $(':checkbox.country-filter').each(function() {
+//             if($(this).prop("checked") == true) {
+//                 selected_countries.push(this.id)
+//             }
+//         })
+//         var selected_fuel_types = []
+//         $(':checkbox.type-filter').each(function() {
+//             if($(this).prop("checked") == true) {
+//                 selected_fuel_types.push(this.id)
+//             }
+//         })
+//         fetchData(selected_countries, selected_fuel_types)
+//         map.markers = markers
+//         //addZoomListeners()
+//         google.maps.event.addListener(map, 'click', close_infowindow)
+//     })
 
 $('#select-location').submit(function(e) {
     var loadLocation
