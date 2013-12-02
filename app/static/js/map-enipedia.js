@@ -94,10 +94,12 @@ function fetchData(continents, countries, fuel_types) {
     if(continents[0] != 'All' && continents[0] != 'None') {
         continents_query = "?plant prop:Continent a:" + continents[0] + " . \n"
     }
+    c(continents_query)
     
     if(countries[0] != 'All' && countries[0] != 'None') {
         countries_query = "     ?plant prop:Country a:" + countries[0] + " . \n"
     }
+    c(countries_query)
 
     if(fuel_types[0] != 'All' && fuel_types[0] != 'None') {
         fuel_types_query = "     FILTER("
@@ -122,13 +124,13 @@ function fetchData(continents, countries, fuel_types) {
         "select ?plant_name ?latitude ?longitude ?fuel_used ?OutputMWh ?elec_capacity_MW ?wikipedia_page ?year_built ?owner_company ?power_plant_type where { \n" +
             continents_query +
             countries_query +
-            fuel_types_query +
             "?plant rdf:type cat:Powerplant . \n" +
             "?plant rdfs:label ?plant_name . \n" +
             "?plant prop:Latitude ?latitude . \n" +
             "?plant prop:Longitude ?longitude . \n" +
-            "OPTIONAL{?plant prop:Fuel_type ?fuel_type . \n" +
-                "?fuel_type rdfs:label ?fuel_used } . \n" +
+            "?plant prop:Fuel_type ?fuel_type . \n" +
+            "?fuel_type rdfs:label ?fuel_used . \n" +
+            fuel_types_query +
             "OPTIONAL{?plant prop:Wikipedia_page ?wikipedia_page } . \n" +
             "OPTIONAL{?plant prop:Year_built ?year_built } . \n" +
             "OPTIONAL{?plant prop:Owner_company ?owner_company } . \n" +
@@ -152,14 +154,13 @@ function fetchData(continents, countries, fuel_types) {
             var category
             for (var i in data['results']['bindings']) {
                 title = data['results']['bindings'][i]['plant_name']['value']
-                //type = 1 //data['results']['bindings'][i]['type']
                 coordinate = new google.maps.LatLng(data['results']['bindings'][i]['latitude']['value'],data['results']['bindings'][i]['longitude']['value'])
                 content = '<strong>'
                 content += '<a href="' + ep_wiki_url + data['results']['bindings'][i]['plant_name']['value'] + '">'
                 content += data['results']['bindings'][i]['plant_name']['value'].replace(" Powerplant", "")/*.replace(new RegExp("_", "g"), " ")*/
                 content += '</a>'
                 content += '</strong><br>'
-                content += data['results']['bindings'][i]['fuel_used'] ? "Fuel: " + data['results']['bindings'][i]['fuel_used']['value'] + "<br>" : ''
+                content += data['results']['bindings'][i]['fuel_used'] ? "Energy source: " + data['results']['bindings'][i]['fuel_used']['value'] + "<br>" : ''
                 if(data['results']['bindings'][i]['elec_capacity_MW']) {
                     content += "Capacity: " + data['results']['bindings'][i]['elec_capacity_MW']['value'] + " MW<br>"
                 }
@@ -286,7 +287,7 @@ $(document).ready(function() {
         },
         dataType: 'jsonp',
         success: function(data) {
-            //c(data)
+            c(data)
             var continents_select = document.getElementById('continents')
             //c(continents_select)
             // Append blank option
@@ -332,7 +333,7 @@ $(document).ready(function() {
         },
         dataType: 'jsonp',
         success: function(data) {
-            //c(data)
+            c(data)
             var countries_select = document.getElementById('countries')
             //c(countries_select)
             // Append blank option
@@ -380,7 +381,7 @@ $(document).ready(function() {
         },
         dataType: 'jsonp',
         success: function(data) {
-            //c(data)
+            c(data)
             var fuel_types_ul = document.getElementById('fuel_types')
             //c(fuel_types_select)
             var li = document.createElement('li')
@@ -404,7 +405,7 @@ $(document).ready(function() {
                 var fuel_type_label = document.createElement('label')
                 li.append(fuel_type_label)
                 fuel_type_label.appendChild(document.createTextNode(fuel_types[i].fuel_type.value.replace(new RegExp("_", "g"), " ")))
-                var fuel_type_checkbox = $("<input type='checkbox' name= '" + fuel_types[i].fuel_type.value + "'class='l3' checked>")
+                var fuel_type_checkbox = $("<input type='checkbox' name= '" + fuel_types[i].fuel_type.value.replace(new RegExp("_", "g"), " ") + "'class='l3' checked>")
                 $(fuel_type_label).append(fuel_type_checkbox)
                 parent_fuel_type.append(li)
             } 
