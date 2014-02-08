@@ -32,6 +32,7 @@ var uniqueId = function() {
 }
 
 var markers = {}
+var spinner = '';
 
 function c(args) {
     console.log(args)
@@ -102,6 +103,7 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type)
     //c(countries_query)
 
 
+    c(fuel_types)
     if(include_unknown_fuel_type) {
         fuel_types_query += "OPTIONAL {"
     }
@@ -155,7 +157,7 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type)
         //c(data)
     })
         .done(function(data) {
-            c(data['results']['bindings'][0])
+            //c(data['results']['bindings'][0])
             var icon_url
             var content
             var coordinate
@@ -186,15 +188,22 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type)
                     icon_url = baseurl + "static/img/markers/default-marker.png" //data['results']['bindings'][i]['iconurl']
                 }
                 createMarker(coordinate, icon_url, title, content)
-            }        
+            }
+            spinner.stop()
+        })
+        .fail(function( jqxhr, textStatus, error) {
+            var err = textStatus + ", " + error;
+            spinner.stop()
+            alert( "Request Failed: " + err )
         })
 }
 
 function onError(jqXHR, textStatus, errorThrown) {
-    console.log('error')
+    alert('error')
     console.log(jqXHR)
     console.log(textStatus)
     console.log(errorThrown)
+    spinner.stop()
 }
 
 function addZoomListeners() {
@@ -258,8 +267,6 @@ function initialize() {
             selected_types.push(this.id)
         }
     })
-
-    //fetchData(selected_countries, selected_types)
 
     map = new google.maps.Map(document.getElementById('map'), {
         center: new google.maps.LatLng(53.90, -2.8),
@@ -413,7 +420,7 @@ $(document).ready(function() {
                 var fuel_type_label = document.createElement('label')
                 li.append(fuel_type_label)
                 fuel_type_label.appendChild(document.createTextNode(fuel_types[i].fuel_type.value.replace(new RegExp("_", "g"), " ")))
-                var fuel_type_checkbox = $("<input type='checkbox' name= '" + fuel_types[i].fuel_type.value.replace(new RegExp("_", "g"), " ") + "'class='l3' checked>")
+                var fuel_type_checkbox = $("<input type='checkbox' name= '" + fuel_types[i].fuel_type.value.replace(new RegExp("_", "g"), " ") + "'class='lower l3' checked>")
                 $(fuel_type_label).append(fuel_type_checkbox)
                 parent_fuel_type.append(li)
             } 
@@ -425,11 +432,14 @@ $(document).ready(function() {
             var marker = markers[key]
                 marker.setMap(null)
         }
+        
+        var target = document.getElementById('spinner-container');
+        spinner = new Spinner().spin(target);
+        
         selected_continents = []
         selected_countries = []
         selected_fuel_types = []
         include_unknown_fuel_type = false
-        //c($(this))
         if($(this).attr('id') == "continents") {
             $("select#countries option[value=None]").attr('selected', true)
         }
@@ -438,11 +448,9 @@ $(document).ready(function() {
         }
         
         $("select#continents option:selected").each(function() {
-            //c($(this).val())
             selected_continents.push($(this).val())
         })
         $("select#countries option:selected").each(function() {
-            //c($(this).val())
             selected_countries.push($(this).val())
         })
         
@@ -457,137 +465,59 @@ $(document).ready(function() {
         if($("input#unknown").prop("checked")) {
             include_unknown_fuel_type = true
         }
+        
         fetchData(selected_continents, selected_countries, selected_fuel_types, include_unknown_fuel_type)
     })
-    
-    // $("select#continents").change(function() {
-//         for(var key in markers) {
-//             var marker = markers[key]
-//                 marker.setMap(null)
-//         }
-//         selected_continents = []
-//         selected_countries = []
-//         selected_fuel_types = ['All']
-//         $("select#continents option:selected").each(function() {   
-//             selected_continents.push($(this).val())
-//         })
-// //         $("select#fuel_types option:selected").each(function() {   
-// //             selected_fuel_types.push($(this).val())
-// //         })
-//         c(selected_continents)
-//         //c(selected_fuel_types)
-//         fetchData(selected_continents, selected_countries, selected_fuel_types)
-//     })
-//     
-//     $("select#countries").change(function() {
-//         selected_countries = []
-//         selected_fuel_types = ['All']
-//         $("select#countries option:selected").each(function() {   
-//             selected_countries.push($(this).val())
-//         })
-// //         $("select#fuel_types option:selected").each(function() {   
-// //             selected_fuel_types.push($(this).val())
-// //         })
-//         c(selected_countries)
-//         //c(selected_fuel_types)
-//         fetchData(selected_countries, selected_fuel_types)
-//     })
-    
-//     $("select#fuel_types").change(function() {
-//         selected_countries = []
-//         selected_fuel_types = []
-//         $("select#fuel_types option:selected").each(function() {   
-//             selected_fuel_types.push($(this).val())
-//         })
-//         $("select#countries option:selected").each(function() {   
-//             selected_countries.push($(this).val())
-//         })
-//         //c(selected_countries)
-//         //c(selected_fuel_types)
-//         fetchData(selected_countries, selected_fuel_types)
-//     })
 
-    // $(":checkbox.filter").change(function() {
-//         for(var key in markers) {
-//             var marker = markers[key]
-//                 marker.setMap(null)
-//         }
-//         var selected_countries = []
-//         $(':checkbox.country-filter').each(function() {
-//             if($(this).prop("checked") == true) {
-//                 selected_countries.push(this.id)
-//             }
-//         })
-//         var selected_fuel_types = []
-//         $(':checkbox.type-filter').each(function() {
-//             if($(this).prop("checked") == true) {
-//                 selected_fuel_types.push(this.id)
-//             }
-//         })
-//         fetchData(selected_countries, selected_fuel_types)
-//         map.markers = markers
-//         //addZoomListeners()
-//         google.maps.event.addListener(map, 'click', close_infowindow)
-//     })
+    $('#select-location').submit(function(e) {
+        var loadLocation
+        loadLocation = $('#select-location-input').val()
 
-$('#select-location').submit(function(e) {
-    var loadLocation
-    loadLocation = $('#select-location-input').val()
-
-    // Convert loadLocation into LatLng
-    var geocoder = new google.maps.Geocoder()
-    geocoder.geocode({
-      'address': loadLocation,
-    },
-    function(results, status) {
-      if(status == google.maps.GeocoderStatus.OK) {
-         map.setCenter(results[0].geometry.location)
-         map.setZoom(map.getZoom())
-      }
+        // Convert loadLocation into LatLng
+        var geocoder = new google.maps.Geocoder()
+        geocoder.geocode({
+            'address': loadLocation,
+        },
+        function(results, status) {
+            if(status == google.maps.GeocoderStatus.OK) {
+                map.setCenter(results[0].geometry.location)
+                map.setZoom(map.getZoom())
+            }
+        })
+        e.preventDefault()
     })
-    e.preventDefault()
-   })
    
-   $(':checkbox.broad').change(function() {
-        //console.log(this.checked)
+    $(':checkbox.broad').change(function() {
         if($(this).prop("checked")) {
-            //c($(this).find(':checkbox'))
             $(this).parent().next().find(':checkbox').prop("checked", true)
-                //c($(this))
-                //c(this.checked)
-                //c($(this).prop("checked"))
-                //c($(this).attr("checked"))
-                //this.checked=true
-                //$(this).prop("checked", true)
-            //})
         }
         else {
             $(this).parent().next().find(':checkbox').prop("checked", false)
-                //this.checked=false
-                //$(this).prop("checked", false)
-            //})
         }
     })
-   
-  //  $(':checkbox.all-country-filter').change(function() {
-//         console.log(this.checked)
-//         if(this.checked) {
-//             $(':checkbox.continent-filter').prop("checked", true)
-//             $(':checkbox.country-filter').prop("checked", true)
+    
+    var all_checked = true;
+    
+    $(':checkbox.l2').change(function() {
+        if($(this).prop("checked")) {
+            all_checked = true;
+            $(':checkbox#all').prop("checked", true)
+        }
+        else {
+            all_checked = false;
+            $(':checkbox#all').prop("checked", false)
+        }
+    })
+    
+    
+//     $(':checkbox.lower').change(function() {
+//         if(all_checked == true) {
+//             all_checked = false;
+//             $(':checkbox#all').prop("checked", false)
 //         }
 //         else {
-//             $(':checkbox.continent-filter').prop("checked", false)
-//             $(':checkbox.country-filter').prop("checked", false)
+//             $(':checkbox#all').prop("checked", true)
+//             all_checked = true;
 //         }
 //     })
-// 
-//     $(':checkbox.all-type-filter').change(function() {
-//         console.log(this.checked)
-//         if(this.checked) {
-//             $(':checkbox.type-filter').prop("checked", true)
-//         }
-//         else {
-//             $(':checkbox.type-filter').prop("checked", false)
-//     }
-   
 })
