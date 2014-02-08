@@ -412,6 +412,7 @@ $(document).ready(function() {
                 for(cat in fuel_types_categories) {
                     if(fuel_types_categories[cat].indexOf(fuel_types[i].fuel_type.value) > -1) {
                         var parent_fuel_type = $('ul.fuel_types #' + cat + ' ul')
+                        var parent_fuel_cat = cat
                         break
                     }
                     var parent_fuel_type = $('ul.fuel_types #unknown ul')
@@ -420,7 +421,28 @@ $(document).ready(function() {
                 var fuel_type_label = document.createElement('label')
                 li.append(fuel_type_label)
                 fuel_type_label.appendChild(document.createTextNode(fuel_types[i].fuel_type.value.replace(new RegExp("_", "g"), " ")))
-                var fuel_type_checkbox = $("<input type='checkbox' name= '" + fuel_types[i].fuel_type.value.replace(new RegExp("_", "g"), " ") + "'class='lower l3' checked>")
+                var fuel_type_checkbox = $("<input type='checkbox' name= '" + fuel_types[i].fuel_type.value.replace(new RegExp("_", "g"), " ") + "'class='lower l3 " + parent_fuel_cat + "' checked = 'true'>")
+                // Still doesn't work
+                fuel_type_checkbox.bind('change', function() {
+                    c(this)
+                    var classes = $(this).attr("class").split(" ");
+                    c(classes)
+                    var cat = classes[classes.length - 1];
+                    c(cat)
+                    c($('input.l2#' + cat))
+                    if(!$(this).prop("checked")) {
+                        $('input.l2#' + cat).prop("checked", false)
+                        $(':checkbox#all').prop("checked", false)
+                    }
+                    else {
+                        if($('input.lower.l3.' + cat).filter(':not(:checked)').length === 0) {
+                            $('input.l2#' + cat).prop("checked", true)
+                        }
+                        if($('input.lower.l3').filter(':not(:checked)').length === 0) {
+                            $(':checkbox#all').prop("checked", true)
+                        }
+                    }
+                })
                 $(fuel_type_label).append(fuel_type_checkbox)
                 parent_fuel_type.append(li)
             } 
@@ -496,16 +518,20 @@ $(document).ready(function() {
         }
     })
     
-    var all_checked = true;
     
+    // Ensure top level checkbox fits with l2 ones
+    
+    // var all_checked = true;
+//     
     $(':checkbox.l2').change(function() {
-        if($(this).prop("checked")) {
-            all_checked = true;
-            $(':checkbox#all').prop("checked", true)
-        }
-        else {
+        //c(this)
+        if(!$(this).prop("checked")) {
             all_checked = false;
             $(':checkbox#all').prop("checked", false)
+        }
+        else if ($('input.l2').filter(':not(:checked)').length === 0) {
+            all_checked = true;
+            $(':checkbox#all').prop("checked", true)
         }
     })
     
