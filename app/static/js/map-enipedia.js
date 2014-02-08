@@ -103,18 +103,23 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type)
     //c(countries_query)
 
 
-    c(fuel_types)
+    c('fuel_types: ', fuel_types)
     if(include_unknown_fuel_type) {
         fuel_types_query += "OPTIONAL {"
     }
     fuel_types_query += "?plant prop:Fuel_type ?fuel_type . ?fuel_type rdfs:label ?fuel_used . \n"
     if(fuel_types[0] != 'All' && fuel_types[0] != 'None') {
         fuel_types_query += "FILTER("
-        for(var n = 0; n < fuel_types.length; n++) {
-            if(n > 0) {
-                fuel_types_query += " || "
+        if(fuel_types.length < 1) {
+            fuel_types_query += "?fuel_used = ''"
+        }
+        else {
+            for(var n = 0; n < fuel_types.length; n++) {
+                if(n > 0) {
+                    fuel_types_query += " || "
+                }
+                fuel_types_query += "?fuel_used = '" + fuel_types[n] + "'"
             }
-            fuel_types_query += "?fuel_used = '" + fuel_types[n] + "'"
         }
         fuel_types_query += ")"
     }

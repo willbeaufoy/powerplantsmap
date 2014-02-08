@@ -22,3 +22,8 @@ App requires a config.py in root containing the following in order to save and d
 
     apppath = os.path.dirname(os.path.abspath(__file__)) + '/app/'
     markerspath = apppath + 'static/img/markers/'
+    
+
+# Problems
+
+* Unknown type currently doesn't seem to work on its own
