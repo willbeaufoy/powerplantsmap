@@ -8,23 +8,26 @@ html {
 
 body {
     height:100%;
-    //overflow:hidden;
-}
-
-header {
-    //margin-bottom: 25px;
-    padding: 0 25px;
-    background: @handf;
-    //border-bottom: 2px solid #333;
 }
 
 #main {
-    margin-bottom: 20px;
+    //margin-bottom: 20px;
+}
+
+/* Header */
+
+header {
+    padding: 0 25px;
+    background: @handf;
 }
 
 header h1 {
-    font-size: 60px;
+    font-size: 40px;
     font-family: 'Source Sans Pro', "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+header h1, h2, select {
+    display: inline;
 }
 
 footer {
@@ -35,12 +38,6 @@ footer {
 footer img {
     position: relative;
     top: 3px;
-}
-
-.container {
-    //width: 1000px;
-    //margin-left: auto;
-    //margin-right: auto;
 }
 
 #ctc a {
@@ -56,7 +53,7 @@ main li {
 
 #map {
     width: 100%;
-    height: 1000px;
+    height: 100%;
 }
 
 #map div {
@@ -66,19 +63,22 @@ main li {
 /* Panel */
 
 #panel {
-    width:300px;
-    position:absolute;
-    top:114px;
-    background:@whitey;
+    width: 250px;
+    position: absolute;
+    top: 100px;
+    background: @whitey;
     padding: 10px 0 0 10px;
 }
 
 #panel ul li img {
     height:20px;
+    vertical-align: -3px;
+    margin-right: 3px;
 }
 
 #toggle-panel {
     cursor:pointer;
+    float:right;
 }
 
 .arrow-left {
@@ -87,10 +87,9 @@ main li {
     border-right:30px solid #333;
     border-top:30px solid transparent;
     border-bottom:30px solid transparent;
-    float:right;
     position:fixed;
     top:50%;
-    left:270px;
+    left:230px;
 }
 
 .arrow-right {
@@ -99,7 +98,6 @@ main li {
     border-left:30px solid black;
     border-top:30px solid transparent;
     border-bottom:30px solid transparent;
-    float:right;
     position:fixed;
     top:50%;
 }
@@ -112,6 +110,18 @@ ul#fuel_types input[type=checkbox] {
     margin: 0 0 0 7px;
 }
 
+ul li ul {
+    margin-left: 1.25em;
+}
+
+li {
+    list-style-type: none;
+}
+
+li.l1 {
+    margin-bottom: 3px;
+}
+
 #spinner-container {
     position: fixed;
     top: 50%;
@@ -122,6 +132,6 @@ ul#fuel_types input[type=checkbox] {
 
 @media (max-width: 480px) {
     html {
-            -webkit-text-size-adjust: none; /* Prevent font scaling in landscape */
+        -webkit-text-size-adjust: none; /* Prevent font scaling in landscape */
     }
 }

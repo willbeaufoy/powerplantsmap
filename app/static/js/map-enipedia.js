@@ -38,21 +38,43 @@ function c(args) {
     console.log(args)
 }
 
-function createMarker (coordinate, iconurl, title, content) {
+function centerMap(location, zoom) {
+    // Convert loadLocation into LatLng
+    var geocoder = new google.maps.Geocoder()
+    geocoder.geocode({
+        'address': location,
+    },
+    function(results, status) {
+        if(status == google.maps.GeocoderStatus.OK) {
+            map.setCenter(results[0].geometry.location)
+            map.setZoom(zoom)
+        }
+    })
+}
+
+function createMarker (coordinate, iconurl, title, content, capacity) {
 
     var id = uniqueId()
     var icon_dims
-
-    if(map.zoom > 11) {
-        icon_dims = icon_large
+    
+    if($("input#toggle-relative-size").prop("checked")) {
+        x = capacity / 100
+        y = x * 0.8
+        icon_dims = {x: x, y: y}
     }
-
-    else if(map.zoom > 7) {
-        icon_dims = icon_medium
-    }
-
+    
     else {
-        icon_dims = icon_small
+        if(map.zoom > 11) {
+            icon_dims = icon_large
+        }
+
+        else if(map.zoom > 7) {
+            icon_dims = icon_medium
+        }
+
+        else {
+            icon_dims = icon_small
+        }
     }
 
     if(iconurl.indexOf('default-marker.png') != -1) {
@@ -91,13 +113,17 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type)
     var continents_query = ''
     var countries_query = ''
     var fuel_types_query = ''
+    var capacity_query = ''
     
+    c(continents)
     if(continents[0] != 'All' && continents[0] != 'None') {
+        centerMap(continents[0], 3)
         continents_query = "?plant prop:Continent a:" + continents[0] + " . \n"
     }
     //c(continents_query)
-    
+    c(countries)
     if(countries[0] != 'All' && countries[0] != 'None') {
+        centerMap(countries[0], 5)
         countries_query = "     ?plant prop:Country a:" + countries[0] + " . \n"
     }
     //c(countries_query)
@@ -127,7 +153,14 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type)
         fuel_types_query += "}"
     }
     fuel_types_query += "\n"
-    c(fuel_types_query)
+    //c(fuel_types_query)
+    
+    if($("input#toggle-relative-size").prop("checked")) {
+        capacity_query = "?plant prop:Generation_capacity_electrical_MW ?elec_capacity_MW. \n"
+    }
+    else {
+        capacity_query = "OPTIONAL{?plant prop:Generation_capacity_electrical_MW ?elec_capacity_MW }. \n"
+    }
     
     var url = "http://enipedia.tudelft.nl/sparql/?default-graph-uri=&query="
     
@@ -149,11 +182,11 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type)
             "OPTIONAL{?plant prop:Year_built ?year_built } . \n" +
             "OPTIONAL{?plant prop:Owner_company ?owner_company } . \n" +
             "OPTIONAL{?plant prop:Power_plant_type ?power_plant_type } . \n" +
-            "?plant prop:Annual_Energyoutput_MWh ?OutputMWh . \n" +
-            "OPTIONAL{?plant prop:Generation_capacity_electrical_MW ?elec_capacity_MW }. \n" +
+            "OPTIONAL{?plant prop:Annual_Energyoutput_MWh ?OutputMWh } . \n" +
+            capacity_query +
         "} order by ?plant ?fuel_type"
     
-    c(query)
+    //c(query)
     query = encodeURIComponent(query)
 
 
@@ -167,6 +200,7 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type)
             var content
             var coordinate
             var category
+            var capacity = ''
             for (var i in data['results']['bindings']) {
                 title = data['results']['bindings'][i]['plant_name']['value']
                 coordinate = new google.maps.LatLng(data['results']['bindings'][i]['latitude']['value'],data['results']['bindings'][i]['longitude']['value'])
@@ -177,7 +211,9 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type)
                 content += '</strong><br>'
                 content += data['results']['bindings'][i]['fuel_used'] ? "Energy source: " + data['results']['bindings'][i]['fuel_used']['value'] + "<br>" : ''
                 if(data['results']['bindings'][i]['elec_capacity_MW']) {
-                    content += "Capacity: " + data['results']['bindings'][i]['elec_capacity_MW']['value'] + " MW<br>"
+                    capacity = data['results']['bindings'][i]['elec_capacity_MW']['value']
+                    if(capacity.substring(capacity.length - 2) == ".0") capacity = capacity.substring(0, capacity.length - 2)
+                    content += "Capacity: " + capacity + " MW<br>"
                 }
                 if(data['results']['bindings'][i]['year_built']) {
                     year_built = new Date(data['results']['bindings'][i]['year_built']['value']).getFullYear()
@@ -192,7 +228,7 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type)
                 else {
                     icon_url = baseurl + "static/img/markers/default-marker.png" //data['results']['bindings'][i]['iconurl']
                 }
-                createMarker(coordinate, icon_url, title, content)
+                createMarker(coordinate, icon_url, title, content, capacity)
             }
             spinner.stop()
         })
@@ -250,7 +286,7 @@ function addZoomListeners() {
         this.previousZoom = this.zoom
     }
 
-    google.maps.event.addListener(map, 'zoom_changed', change_icon_size)
+    //google.maps.event.addListener(map, 'zoom_changed', change_icon_size)
 }
 
 function close_infowindow() {
@@ -454,7 +490,7 @@ $(document).ready(function() {
         }
     })
     
-    $("select.plants").change(function() {
+    function refresh() {
         for(var key in markers) {
             var marker = markers[key]
                 marker.setMap(null)
@@ -467,12 +503,6 @@ $(document).ready(function() {
         selected_countries = []
         selected_fuel_types = []
         include_unknown_fuel_type = false
-        if($(this).attr('id') == "continents") {
-            $("select#countries option[value=None]").attr('selected', true)
-        }
-        else if($(this).attr('id') == "countries") {
-            $("select#continents option[value=None]").attr('selected', true)
-        }
         
         $("select#continents option:selected").each(function() {
             selected_continents.push($(this).val())
@@ -494,23 +524,26 @@ $(document).ready(function() {
         }
         
         fetchData(selected_continents, selected_countries, selected_fuel_types, include_unknown_fuel_type)
+    }
+    
+    $("select.plants").change(function() {
+        if($(this).attr('id') == "continents") {
+            $("select#countries option[value=None]").attr('selected', true)
+        }
+        else if($(this).attr('id') == "countries") {
+            $("select#continents option[value=None]").attr('selected', true)
+        }        
+        refresh()
+    })
+    
+    $("#refresh").click(function() {
+        refresh()
     })
 
     $('#select-location').submit(function(e) {
         var loadLocation
         loadLocation = $('#select-location-input').val()
-
-        // Convert loadLocation into LatLng
-        var geocoder = new google.maps.Geocoder()
-        geocoder.geocode({
-            'address': loadLocation,
-        },
-        function(results, status) {
-            if(status == google.maps.GeocoderStatus.OK) {
-                map.setCenter(results[0].geometry.location)
-                map.setZoom(map.getZoom())
-            }
-        })
+        centerMap(loadLocation, map.getZoom())
         e.preventDefault()
     })
    
@@ -539,6 +572,8 @@ $(document).ready(function() {
             $(':checkbox#all').prop("checked", true)
         }
     })
+    
+    
     
     
 //     $(':checkbox.lower').change(function() {

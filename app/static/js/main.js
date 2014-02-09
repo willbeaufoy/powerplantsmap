@@ -1,7 +1,11 @@
 $(document).ready(function() {
     $('#toggle-panel').click(function() {
-        $('#panel').toggle()
+        //$('#panel').toggle()
         $(this).toggleClass('arrow-left arrow-right')
+    })
+    
+    $('#toggle-l3').click(function() {
+        $('ul.l3').toggleClass("hide")
     })
 
    //  $(':checkbox.all-country-filter').change(function() {

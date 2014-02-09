@@ -26,4 +26,6 @@ App requires a config.py in root containing the following in order to save and d
 
 # Problems
 
+# Solved
+
 * Unknown type currently doesn't seem to work on its own
