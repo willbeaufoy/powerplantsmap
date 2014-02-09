@@ -58,9 +58,17 @@ function createMarker (coordinate, iconurl, title, content, capacity) {
     var icon_dims
     
     if($("input#toggle-relative-size").prop("checked")) {
-        x = capacity / 100
-        y = x * 0.8
-        icon_dims = {x: x, y: y}
+        if(map.zoom > 11) {
+            icon_dims = {x: capacity / 30, y: capacity / 30 * 0.8}
+        }
+
+        else if(map.zoom > 7) {
+            icon_dims = {x: capacity / 60, y: capacity / 60 * 0.8}
+        }
+
+        else {
+            icon_dims = {x: capacity / 100, y: capacity / 100 * 0.8}
+        }
     }
     
     else {
@@ -252,6 +260,7 @@ function addZoomListeners() {
     function change_icon_size() {
         if(this.zoom > 7 && this.zoom <= 11 && this.previousZoom <= 7) {
             $.each(this.markers, function() {
+                c(this)
                 this.setIcon(icon = {
                     url: this.getIcon()['url'],
                     scaledSize: new google.maps.Size(icon_medium.x, icon_medium.y)
@@ -286,7 +295,7 @@ function addZoomListeners() {
         this.previousZoom = this.zoom
     }
 
-    //google.maps.event.addListener(map, 'zoom_changed', change_icon_size)
+    google.maps.event.addListener(map, 'zoom_changed', change_icon_size)
 }
 
 function close_infowindow() {
@@ -311,7 +320,7 @@ function initialize() {
 
     map = new google.maps.Map(document.getElementById('map'), {
         center: new google.maps.LatLng(53.90, -2.8),
-        zoom: 6,
+        zoom: 2,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         previousZoom: 6,
         markers: markers

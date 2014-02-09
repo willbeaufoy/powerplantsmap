@@ -11,13 +11,14 @@ body {
 }
 
 #main {
-    //margin-bottom: 20px;
+    //height:100%;
+    //width:100%;
 }
 
 /* Header */
 
 header {
-    padding: 0 25px;
+    padding: 10px 25px;
     background: @handf;
 }
 
@@ -52,22 +53,30 @@ main li {
 /* Maps */
 
 #map {
-    width: 100%;
+    //width: 100%;
     height: 100%;
+    //float: left;
+    position: relative;
 }
 
 #map div {
-    line-height:normal;
+    line-height: normal;
 }
 
 /* Panel */
 
 #panel {
     width: 250px;
-    position: absolute;
-    top: 100px;
+    height: 100%;
+    float: left;
+    //position: absolute;
+    //top: 100px;
     background: @whitey;
-    padding: 10px 0 0 10px;
+}
+
+#panel-container {
+    float: left;
+    padding: 10px;
 }
 
 #panel ul li img {
@@ -76,30 +85,36 @@ main li {
     margin-right: 3px;
 }
 
-#toggle-panel {
-    cursor:pointer;
-    float:right;
+#close-panel-container {
+    position: relative;
+    top: 50%;
+    left: 230px;
 }
 
-.arrow-left {
+#close-panel {
+    cursor: pointer;
+    float: right;
     width:0;
     height:0;
     border-right:30px solid #333;
     border-top:30px solid transparent;
     border-bottom:30px solid transparent;
-    position:fixed;
-    top:50%;
-    left:230px;
+    position: absolute;
+    //top: 50%;
+    //left:230px;
 }
 
-.arrow-right {
+#open-panel {
+    display: none;
+    cursor: pointer;
     width:0;
     height:0;
     border-left:30px solid black;
     border-top:30px solid transparent;
     border-bottom:30px solid transparent;
-    position:fixed;
-    top:50%;
+    position: relative;
+    top: 50%;
+    z-index: 10;
 }
 
 ul#fuel_types label {

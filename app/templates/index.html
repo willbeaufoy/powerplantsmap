@@ -1,40 +1,70 @@
 {% extends 'base.html' %}
 {% block content %}
+<header>   
+    <div class="row-fluid container">
+        <span class="span8">
+            <h1>World power plants</h1>
+            <!-- 
+<h2>Continents</h2>
+            <select id = "continents" class="plants"></select>
+            <h2>Countries</h2>
+            <select id = "countries"  class="plants"></select>
+ -->
+        </span>
+        <span class="span3 text-right">
+            <div id="select-location" class="">
+                <form id='select-location'>
+                    <input id='select-location-input' type='text' placeholder="Move map to location">
+                    <button id='select-location-submit' type='submit' class="btn btn-inverse btn-large"><i class="icon-large icon-white icon-search"></i></button>
+                </form>
+            </div>
+        </span>
+        <span class="span1 text-right">
+            Data from <a href="http://enipedia.tudelft.nl/wiki/Main_Page">Enipedia</a>
+        </span>
+    </div>
+</header>
 <!-- 
 <div id = "main">
  -->
-    <div id="map" class="map_canvas"></div>
     <div id="panel">
-        <h2>Continents</h2>
-        <select id = "continents" class="plants"></select>
-        <h2>Countries</h2>
-        <select id = "countries"  class="plants"></select>
-        <div id="refresh" class="btn">Refresh</div>
-        <label>Show plants' size relative to capacity in MW (hides all plants with no capacity data)<input type="checkbox" id="toggle-relative-size"></label>
-        <div id="toggle-l3" class="btn">Hide / Show subtypes</div>
-        <ul id="fuel_types">
-            <li><label>All<input type="checkbox" id="all" class="broad" checked="true"></label>
-                <ul id="all" class="fuel_types">
-                    <li id="coal" class="l1"><img src="static/img/markers/Coal.png"><label class="l2">Coal<input type="checkbox" id="coal" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
-                    <li id="gas" class="l1"><img src="static/img/markers/Gas.png"><label class="l2">Gas<input type="checkbox" id="gas" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
-                    <li id="oil" class="l1"><img src="static/img/markers/Oil.png"><label class="l2">Oil<input type="checkbox" id="oil" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
-                    <li id="other-fossil" class="l1"><img src="static/img/markers/Other-fossil.png"><label class="l2">Other fossil<input type="checkbox" id="other-fossil" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
-                    <li id="nuclear" class="l1"><img src="static/img/markers/Nuclear.png"><label class="l2">Nuclear<input type="checkbox" id="nuclear" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
-                    <li id="geothermal" class="l1"><img src="static/img/markers/Geothermal.png"><label class="l2">Geothermal<input type="checkbox" id="geothermal" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
-                    <li id="hydro" class="l1"><img src="static/img/markers/Hydro.png"><label class="l2">Hydro<input type="checkbox" id="hydro" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
-                    <li id="wind" class="l1"><img src="static/img/markers/Wind.png"><label class="l2">Wind<input type="checkbox" id="wind" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
-                    <li id="solar" class="l1"><img src="static/img/markers/Solar.png"><label class="l2">Solar<input type="checkbox" id="solar" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
-                    <li id="other-renewable" class="l1"><img src="static/img/markers/Other-renewable.png"><label class="l2">Other renewable<input type="checkbox" id="other-renewable" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
-                    <li id="biomass" class="l1"><img src="static/img/markers/Biomass.png"><label class="l2">Biomass<input type="checkbox" id="biomass" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
-                    <li id="waste" class="l1"><img src="static/img/markers/Waste.png"><label class="l2">Waste<input type="checkbox" id="waste" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
-                    <li id="unknown" class="l1"><img src="static/img/markers/Unknown.png"><label class="l2">Unknown<input type="checkbox" id="unknown" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
-                </ul>
-            </li>
-        </ul>
+        <div id = "panel-container">
+            <h2>Continents</h2>
+            <select id = "continents" class="plants"></select>
+            <h2>Countries</h2>
+            <select id = "countries"  class="plants"></select>
+            <div id="refresh" class="btn">Refresh</div>
+            <label>Show plants' size relative to capacity in MW (excludes all plants with no capacity data)<input type="checkbox" id="toggle-relative-size"></label>
+            <div id="toggle-l3" class="btn">Hide / Show subtypes</div>
+            <ul id="fuel_types">
+                <li><label>All<input type="checkbox" id="all" class="broad" checked="true"></label>
+                    <ul id="all" class="fuel_types">
+                        <li id="coal" class="l1"><img src="static/img/markers/Coal.png"><label class="l2">Coal<input type="checkbox" id="coal" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
+                        <li id="gas" class="l1"><img src="static/img/markers/Gas.png"><label class="l2">Gas<input type="checkbox" id="gas" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
+                        <li id="oil" class="l1"><img src="static/img/markers/Oil.png"><label class="l2">Oil<input type="checkbox" id="oil" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
+                        <li id="other-fossil" class="l1"><img src="static/img/markers/Other-fossil.png"><label class="l2">Other fossil<input type="checkbox" id="other-fossil" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
+                        <li id="nuclear" class="l1"><img src="static/img/markers/Nuclear.png"><label class="l2">Nuclear<input type="checkbox" id="nuclear" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
+                        <li id="geothermal" class="l1"><img src="static/img/markers/Geothermal.png"><label class="l2">Geothermal<input type="checkbox" id="geothermal" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
+                        <li id="hydro" class="l1"><img src="static/img/markers/Hydro.png"><label class="l2">Hydro<input type="checkbox" id="hydro" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
+                        <li id="wind" class="l1"><img src="static/img/markers/Wind.png"><label class="l2">Wind<input type="checkbox" id="wind" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
+                        <li id="solar" class="l1"><img src="static/img/markers/Solar.png"><label class="l2">Solar<input type="checkbox" id="solar" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
+                        <li id="other-renewable" class="l1"><img src="static/img/markers/Other-renewable.png"><label class="l2">Other renewable<input type="checkbox" id="other-renewable" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
+                        <li id="biomass" class="l1"><img src="static/img/markers/Biomass.png"><label class="l2">Biomass<input type="checkbox" id="biomass" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
+                        <li id="waste" class="l1"><img src="static/img/markers/Waste.png"><label class="l2">Waste<input type="checkbox" id="waste" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
+                        <li id="unknown" class="l1"><img src="static/img/markers/Unknown.png"><label class="l2">Unknown<input type="checkbox" id="unknown" class="lower l2 broad" checked="true"></label><ul class="l3 hide"></ul></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div id = "close-panel-container">
+            <!-- <a data-toggle="collapse" data-target="#panel"> --><div id="close-panel" class="arrow-left"></div><!-- </a> -->
+        </div>
     </div>
-    <a data-toggle="collapse" data-target="#panel"><div id="toggle-panel" class="arrow-left"></div></a>
+    <!-- <a data-toggle="collapse" data-target="#panel"> --><div id="open-panel" class="arrow-right"></div><!-- </a> -->
+    <div id="map" class="map_canvas"></div>
     <div id="spinner-container"></div>
 <!-- 
 </div>
  -->
+
 {% endblock %}

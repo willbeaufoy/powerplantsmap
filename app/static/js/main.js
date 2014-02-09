@@ -1,7 +1,12 @@
 $(document).ready(function() {
-    $('#toggle-panel').click(function() {
-        //$('#panel').toggle()
-        $(this).toggleClass('arrow-left arrow-right')
+    $('#close-panel').click(function() {
+        $('#panel').hide()
+        $('#open-panel').show()
+    })
+    
+    $('#open-panel').click(function() {
+        $(this).hide()
+        $('#panel').show()
     })
     
     $('#toggle-l3').click(function() {

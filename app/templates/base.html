@@ -5,6 +5,7 @@
     <title>{{title}} - Energy map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="A map of the world's power plants, using data from enipieda">
+    <link rel="shortcut icon" href="/static/img/lightning-icon.png">
     <link rel="stylesheet" href="/static/css/bootstrap.css">
     <link rel="stylesheet" href="/static/css/foundation-selected.css">
     <link rel="stylesheet" href="/static/css/lib/leaflet.css">
@@ -26,7 +27,6 @@
     </script>
 </head>
 <body>
-    {% include 'header.html' %}
     {% block content %}{% endblock %}
     <script src="/static/js/main.js"></script>
     {% if title == 'Home' %}
