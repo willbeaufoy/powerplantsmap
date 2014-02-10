@@ -212,11 +212,11 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type)
             for (var i in data['results']['bindings']) {
                 title = data['results']['bindings'][i]['plant_name']['value']
                 coordinate = new google.maps.LatLng(data['results']['bindings'][i]['latitude']['value'],data['results']['bindings'][i]['longitude']['value'])
-                content = '<strong>'
+                content = "<span class = 'plant-name'>"
                 content += '<a href="' + ep_wiki_url + data['results']['bindings'][i]['plant_name']['value'] + '">'
                 content += data['results']['bindings'][i]['plant_name']['value'].replace(" Powerplant", "")/*.replace(new RegExp("_", "g"), " ")*/
                 content += '</a>'
-                content += '</strong><br>'
+                content += '</span><br>'
                 content += data['results']['bindings'][i]['fuel_used'] ? "Energy source: " + data['results']['bindings'][i]['fuel_used']['value'] + "<br>" : ''
                 if(data['results']['bindings'][i]['elec_capacity_MW']) {
                     capacity = data['results']['bindings'][i]['elec_capacity_MW']['value']
@@ -229,7 +229,8 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type)
                 }
                 if(data['results']['bindings'][i]['owner_company']) {
                     content += "Owner: " + data['results']['bindings'][i]['owner_company']['value'] + "<br>"
-                }                content += data['results']['bindings'][i]['wikipedia_page'] ? "<a href='" + data['results']['bindings'][i]['wikipedia_page']['value'] + "'>Wikipedia Page</a><br>" : ''
+                }
+                content += data['results']['bindings'][i]['wikipedia_page'] ? "<a href='" + data['results']['bindings'][i]['wikipedia_page']['value'] + "'><img src='/static/img/wikipedia.ico' width=20></a><br>" : ''
                 if(data['results']['bindings'][i]['fuel_used']) {
                     icon_url = baseurl + "static/img/markers/" + data['results']['bindings'][i]['fuel_used']['value'].replace(" ", "-").toLowerCase() + "-marker.png"
                 }
@@ -325,7 +326,9 @@ function initialize() {
         previousZoom: 6,
         markers: markers
     })
-
+    
+    $('#map').height($(window).height() - $('header').outerHeight())
+    
     addZoomListeners()
 
     google.maps.event.addListener(map, 'click', close_infowindow)

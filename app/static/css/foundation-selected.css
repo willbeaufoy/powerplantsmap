@@ -42,16 +42,6 @@ td {
   padding: 0;
   direction: ltr; }
 
-/* Default Link Styles */
-a {
-  color: #2ba6cb;
-  text-decoration: none;
-  line-height: inherit; }
-  a:hover, a:focus {
-    color: #2795b6; }
-  a img {
-    border: none; }
-
 /* Default paragraph styles */
 p {
   font-family: inherit;
