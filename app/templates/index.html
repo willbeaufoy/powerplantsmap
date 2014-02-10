@@ -2,7 +2,7 @@
 {% block content %}
 <header>   
     <div class="row-fluid container">
-        <span class="span8">
+        <span class="span6">
             <h1>World power plants</h1>
             <!-- 
 <h2>Continents</h2>
@@ -11,16 +11,16 @@
             <select id = "countries"  class="plants"></select>
  -->
         </span>
-        <span class="span3 text-right">
+        <span class="span4 text-right">
             <div id="select-location" class="">
                 <form id='select-location'>
                     <input id='select-location-input' type='text' placeholder="Move map to location">
-                    <button id='select-location-submit' type='submit' class="btn btn-inverse btn-large"><i class="icon-large icon-white icon-search"></i></button>
+                    <button id='select-location-submit' type='submit' class="btn btn-inverse"><i class="icon-large icon-white icon-search"></i></button>
                 </form>
             </div>
         </span>
-        <span class="span1 text-right">
-            Data from <a href="http://enipedia.tudelft.nl/wiki/Main_Page">Enipedia</a>
+        <span id="enipedia-attribution" class="span2 text-right">
+            All data from <a href="http://enipedia.tudelft.nl/wiki/Main_Page">Enipedia</a>
         </span>
     </div>
 </header>
@@ -31,9 +31,9 @@
             <select id = "continents" class="plants"></select>
             <h2>Countries</h2>
             <select id = "countries"  class="plants"></select>
-            <div id="refresh" class="btn">Refresh</div>
+            <div id="refresh" class="btn btn-inverse">Refresh map</div>
             <label>Show plants' size relative to capacity in MW (excludes all plants with no capacity data)<input type="checkbox" id="toggle-relative-size"></label>
-            <div id="toggle-l3" class="btn">Hide / Show subtypes</div>
+            <div id="toggle-l3" class="btn btn-inverse">Hide / Show subtypes</div>
             <ul id="fuel_types">
                 <li><label>All<input type="checkbox" id="all" class="broad" checked="true"></label>
                     <ul id="all" class="fuel_types">

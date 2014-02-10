@@ -6,8 +6,9 @@ html {
     background: @handf;
 }
 
-body {
+body, input {
     height:100%;
+    font-family: 'Exo 2', "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 #main {
@@ -21,16 +22,42 @@ body {
 header {
     padding: 10px 25px;
     background: @handf;
+    border-bottom: 1px solid #333;
 }
 
 header h1 {
-    font-size: 40px;
-    font-family: 'Source Sans Pro', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 45px;
+    font-family: 'Russo One', "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 header h1, h2, select {
     display: inline;
 }
+
+header .span4 {
+    padding-top: 7px;
+}
+
+header .span2 {
+    padding-top: 14px;
+    text-align: center;
+}
+
+#select-location-input {
+    height: 25px;
+    font-size: 15px;
+}
+
+#select-location-submit {
+    vertical-align: top;
+    height: 35px;
+}
+
+#enipedia-attribution {
+    font-size: 15px;
+}
+
+/* End header */
 
 footer {
     padding: 10px 0;
@@ -51,23 +78,6 @@ main li {
     margin-bottom: 15px;
 }
 
-/* Maps */
-
-#map {
-    //width: 100%;
-    height: 100%;
-    //float: left;
-    //position: relative;
-}
-
-#map div {
-    line-height: normal;
-}
-
-.plant-name {
-    font-weight: bold;
-}
-
 /* Panel */
 
 #panel {
@@ -77,6 +87,7 @@ main li {
     //position: absolute;
     //top: 100px;
     background: @whitey;
+    border-right: 1px solid #333;
 }
 
 #panel-container {
@@ -88,6 +99,12 @@ main li {
     height:20px;
     vertical-align: -3px;
     margin-right: 3px;
+}
+
+#panel .btn-inverse {
+    font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 10px;
 }
 
 #close-panel-container {
@@ -142,10 +159,35 @@ li.l1 {
     margin-bottom: 3px;
 }
 
+input[type=checkbox]#toggle-relative-size {
+    margin-left: 5px;
+}
+
+input[type=checkbox] {
+    vertical-align: 10px;
+}
+
 #spinner-container {
     position: fixed;
     top: 50%;
     left: 50%;
+}
+
+/* Map */
+
+#map {
+    //width: 100%;
+    height: 100%;
+    //float: left;
+    //position: relative;
+}
+
+#map div {
+    line-height: normal;
+}
+
+.plant-name {
+    font-weight: bold;
 }
 
 /* Responsive */
