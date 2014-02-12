@@ -26,6 +26,16 @@ App requires a config.py in root containing the following in order to save and d
 
 # Problems
 
+## OSX
+
+### Chrome
+
+* Checkboxes are too low - http://stackoverflow.com/questions/306252/how-to-align-checkboxes-and-their-labels-consistently-cross-browsers
+
+### Safari
+
+* Checkboxes missing. If given a height they display
+
 # Solved
 
 * Unknown type currently doesn't seem to work on its own

@@ -327,7 +327,8 @@ function initialize() {
         markers: markers
     })
     
-    $('#map').height($(window).height() - $('header').outerHeight())
+//     $('#map').height($(window).height() - $('header').outerHeight())
+    $('#map').height($('#panel').outerHeight())
     
     addZoomListeners()
 
