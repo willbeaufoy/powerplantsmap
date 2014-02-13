@@ -63,15 +63,15 @@ function createMarker (coordinate, iconurl, title, content, capacity) {
     
     if($("input#toggle-relative-size").prop("checked")) {
         if(map.zoom > 11) {
-            icon_dims = {x: capacity / 30, y: capacity / 30}
+            icon_dims = {x: Math.sqrt(capacity) / 3, y: Math.sqrt(capacity) / 3}
         }
 
         else if(map.zoom > 7) {
-            icon_dims = {x: capacity / 60, y: capacity / 60}
+            icon_dims = {x: Math.sqrt(capacity) / 3, y: Math.sqrt(capacity) / 3}
         }
 
         else {
-            icon_dims = {x: capacity / 100, y: capacity / 100}
+            icon_dims = {x: Math.sqrt(capacity) / 3, y: Math.sqrt(capacity) / 3}
         }
     }
     
