@@ -36,6 +36,12 @@ App requires a config.py in root containing the following in order to save and d
 
 * Checkboxes missing. If given a height they display
 
+## Windows
+
+### IE
+
+* <= 8 neither header nor map displays
+
 # Solved
 
 * Unknown type currently doesn't seem to work on its own

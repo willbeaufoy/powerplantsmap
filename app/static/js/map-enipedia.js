@@ -2,9 +2,9 @@ var map;
 var infoWindow = new google.maps.InfoWindow();
 var baseurl = location.protocol + "//" + location.host + "/"
 var markersurl = baseurl + "static/img/markers/"
-var icon_small = {x: 10, y: 8}
-var icon_medium = {x: 17, y: 14}
-var icon_large = {x: 30, y: 24}
+var icon_small = {x: 10, y: 10}
+var icon_medium = {x: 17, y: 17}
+var icon_large = {x: 30, y: 30}
 var currentId = 0;
 var markers_ext = ".png"
 var all_continents = []
@@ -52,6 +52,10 @@ function centerMap(location, zoom) {
     })
 }
 
+// function choose_marker_dims(capacity) {
+//     return
+// }
+
 function createMarker (coordinate, iconurl, title, content, capacity) {
 
     var id = uniqueId()
@@ -59,15 +63,15 @@ function createMarker (coordinate, iconurl, title, content, capacity) {
     
     if($("input#toggle-relative-size").prop("checked")) {
         if(map.zoom > 11) {
-            icon_dims = {x: capacity / 30, y: capacity / 30 * 0.8}
+            icon_dims = {x: capacity / 30, y: capacity / 30}
         }
 
         else if(map.zoom > 7) {
-            icon_dims = {x: capacity / 60, y: capacity / 60 * 0.8}
+            icon_dims = {x: capacity / 60, y: capacity / 60}
         }
 
         else {
-            icon_dims = {x: capacity / 100, y: capacity / 100 * 0.8}
+            icon_dims = {x: capacity / 100, y: capacity / 100}
         }
     }
     
