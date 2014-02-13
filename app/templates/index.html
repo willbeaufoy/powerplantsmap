@@ -2,7 +2,7 @@
 {% block content %}
 <header>   
     <div class="row-fluid container">
-        <span class="span6">
+        <span id="title" class="span6">
             <h1>World power plants</h1>
             <!-- 
 <h2>Continents</h2>
@@ -11,7 +11,7 @@
             <select id = "countries"  class="plants"></select>
  -->
         </span>
-        <span class="span4 text-right">
+        <span id="select-location-wrapper" class="span4 text-right">
             <div id="select-location" class="">
                 <form id='select-location'>
                     <input id='select-location-input' type='text' placeholder="Move map to location">
@@ -54,11 +54,11 @@
                 </li>
             </ul>
         </div>
-        <div id = "close-panel-container">
+        <div title="Hide panel" id = "close-panel-container">
             <!-- <a data-toggle="collapse" data-target="#panel"> --><div id="close-panel" class="arrow-left"></div><!-- </a> -->
         </div>
     </div>
-    <!-- <a data-toggle="collapse" data-target="#panel"> --><div id="open-panel" class="arrow-right"></div><!-- </a> -->
+    <!-- <a data-toggle="collapse" data-target="#panel"> --><div title="Show panel" id="open-panel" class="arrow-right"></div><!-- </a> -->
     <div id="map" class="map_canvas"></div>
     <div id="spinner-container"></div>
     <div class="clearfix"></div>

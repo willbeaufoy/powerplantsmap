@@ -26,7 +26,7 @@ header {
 }
 
 header h1 {
-    font-size: 45px;
+    font-size: 40px;
     font-family: 'Russo One', "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
@@ -34,27 +34,26 @@ header h1, h2, select {
     display: inline;
 }
 
-header .span4 {
+header #select-location-wrapper {
     padding-top: 7px;
+    text-align: center;
 }
 
-header .span2 {
+header #enipedia-attribution {
     padding-top: 14px;
     text-align: center;
+    font-size: 15px;
 }
 
 #select-location-input {
     height: 25px;
+    width: 160px;
     font-size: 15px;
 }
 
 #select-location-submit {
     vertical-align: top;
     height: 35px;
-}
-
-#enipedia-attribution {
-    font-size: 15px;
 }
 
 /* End header */
@@ -186,8 +185,23 @@ li.l1 {
 
 /* Responsive */
 
+@media (max-width: 767px) {
+
+    header #title {
+        text-align: center;
+    }
+    
+    header #enipedia-attribution {
+        padding-top: 7px;
+    }
+}
+
 @media (max-width: 480px) {
     html {
         -webkit-text-size-adjust: none; /* Prevent font scaling in landscape */
+    }
+    
+    header h1 {
+        font-size: 30px;
     }
 }
