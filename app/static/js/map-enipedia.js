@@ -285,7 +285,7 @@ function addZoomListeners() {
                     //c(this.getIcon()['scaledSize']['height'])
                     if(relative_size_markers) {
                         new_size_x = this.getIcon()['scaledSize']['width'] * 2
-                        new_size_x = this.getIcon()['scaledSize']['height'] * 2
+                        new_size_y = this.getIcon()['scaledSize']['height'] * 2
                     }
                     else {
                         new_size_x = icon_medium.x
