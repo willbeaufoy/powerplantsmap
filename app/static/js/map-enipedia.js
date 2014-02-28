@@ -2,9 +2,13 @@ var map;
 var infoWindow = new google.maps.InfoWindow();
 var baseurl = location.protocol + "//" + location.host + "/"
 var markersurl = baseurl + "static/img/markers/"
-var icon_small = {x: 10, y: 10}
-var icon_medium = {x: 17, y: 17}
+// var icon_small = {x: 10, y: 10}
+// var icon_medium = {x: 17, y: 17}
+// var icon_large = {x: 30, y: 30}
+var icon_small = {x: 8, y: 8}
+var icon_medium = {x: 20, y: 20}
 var icon_large = {x: 30, y: 30}
+var relative_size_markers = false
 var currentId = 0;
 var markers_ext = ".png"
 var all_continents = []
@@ -56,12 +60,12 @@ function centerMap(location, zoom) {
 //     return
 // }
 
-function createMarker (coordinate, iconurl, title, content, capacity) {
+function createMarker (coordinate, iconurl, title, content, capacity, marker_sizes) {
 
     var id = uniqueId()
     var icon_dims
     
-    if($("input#toggle-relative-size").prop("checked")) {
+    if(marker_sizes == "relative") {
         if(map.zoom > 11) {
             icon_dims = {x: Math.sqrt(capacity) / 3, y: Math.sqrt(capacity) / 3}
         }
@@ -89,15 +93,9 @@ function createMarker (coordinate, iconurl, title, content, capacity) {
         }
     }
 
-    if(iconurl.indexOf('default-marker.png') != -1) {
-        var icon = iconurl
-    }
-
-    else {
-        var icon = {
-            url: iconurl,
-            scaledSize: new google.maps.Size(icon_dims.x, icon_dims.y)
-        }
+    var icon = {
+        url: iconurl,
+        scaledSize: new google.maps.Size(icon_dims.x, icon_dims.y)
     }
 
    var marker = new google.maps.Marker({
@@ -108,7 +106,11 @@ function createMarker (coordinate, iconurl, title, content, capacity) {
         icon: icon
    })
 
+    //map.markers[id] = marker
     markers[id] = marker
+    
+    //c('marker created: ')
+    //c(marker)
 
     google.maps.event.addListener(marker, 'click', function(event) {
         infoWindow.setPosition(coordinate)
@@ -117,7 +119,7 @@ function createMarker (coordinate, iconurl, title, content, capacity) {
     })
 }
 
-function fetchData(continents, countries, fuel_types, include_unknown_fuel_type) {
+function fetchData(continents, countries, fuel_types, include_unknown_fuel_type, marker_sizes) {
 
     currentId = 0
     markers = {}
@@ -127,13 +129,13 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type)
     var fuel_types_query = ''
     var capacity_query = ''
     
-    c(continents)
+    //c(continents)
     if(continents[0] != 'All' && continents[0] != 'None') {
         centerMap(continents[0], 3)
         continents_query = "?plant prop:Continent a:" + continents[0] + " . \n"
     }
     //c(continents_query)
-    c(countries)
+    //c(countries)
     if(countries[0] != 'All' && countries[0] != 'None') {
         centerMap(countries[0], 5)
         countries_query = "     ?plant prop:Country a:" + countries[0] + " . \n"
@@ -141,7 +143,7 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type)
     //c(countries_query)
 
 
-    c('fuel_types: ', fuel_types)
+    //c('fuel_types: ', fuel_types)
     if(include_unknown_fuel_type) {
         fuel_types_query += "OPTIONAL {"
     }
@@ -167,7 +169,7 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type)
     fuel_types_query += "\n"
     //c(fuel_types_query)
     
-    if($("input#toggle-relative-size").prop("checked")) {
+    if(marker_sizes == "relative") {
         capacity_query = "?plant prop:Generation_capacity_electrical_MW ?elec_capacity_MW. \n"
     }
     else {
@@ -239,9 +241,9 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type)
                     icon_url = baseurl + "static/img/markers/" + data['results']['bindings'][i]['fuel_used']['value'].replace(" ", "-").toLowerCase() + "-marker.png"
                 }
                 else {
-                    icon_url = baseurl + "static/img/markers/default-marker.png" //data['results']['bindings'][i]['iconurl']
+                    icon_url = baseurl + "static/img/markers/Unknown.png" //data['results']['bindings'][i]['iconurl']
                 }
-                createMarker(coordinate, icon_url, title, content, capacity)
+                createMarker(coordinate, icon_url, title, content, capacity, marker_sizes)
             }
             spinner.stop()
         })
@@ -263,37 +265,96 @@ function onError(jqXHR, textStatus, errorThrown) {
 function addZoomListeners() {
 
     function change_icon_size() {
+        c('zoomCHANGED')
+        c('zoom')
+        c(this.zoom)
+        c('prevzoom')
+        c(this.previousZoom)
+        c("Relative size markers is...")
+        c(relative_size_markers)
+        //c('this.markers: ')
+        //c(this.markers)
+        //c('markers: ')
+        //c(markers)
         if(this.zoom > 7 && this.zoom <= 11 && this.previousZoom <= 7) {
-            $.each(this.markers, function() {
-                c(this)
-                this.setIcon(icon = {
-                    url: this.getIcon()['url'],
-                    scaledSize: new google.maps.Size(icon_medium.x, icon_medium.y)
-                })
+        c('1')
+            $.each(markers, function() {
+                //c(this)
+                //if(this.getIcon()) {
+                    //c(this.getIcon()['scaledSize']['width'])
+                    //c(this.getIcon()['scaledSize']['height'])
+                    if(relative_size_markers) {
+                        new_size_x = this.getIcon()['scaledSize']['width'] * 2
+                        new_size_x = this.getIcon()['scaledSize']['height'] * 2
+                    }
+                    else {
+                        new_size_x = icon_medium.x
+                        new_size_y = icon_medium.y
+                    }
+                    //c('beforegeticon')
+                    //c(this.getIcon()['url'])
+                    this.setIcon(icon = {
+                        url: this.getIcon()['url'],
+                        scaledSize: new google.maps.Size(new_size_x, new_size_y)
+                    })
+                //}
             })
         }
         if(this.zoom <= 7 && this.previousZoom > 7) {
-          $.each(this.markers, function() {
-              this.setIcon(icon = {
-                  url: this.getIcon()['url'],
-                  scaledSize: new google.maps.Size(icon_small.x, icon_small.y)
-              })
+        c('2')
+          $.each(markers, function() {
+              //if(this.getIcon()) {
+                  if(relative_size_markers) {
+                        new_size_x = this.getIcon()['scaledSize']['width'] / 2
+                        new_size_y = this.getIcon()['scaledSize']['height'] / 2
+                    }
+                    else {
+                        new_size_x = icon_small.x
+                        new_size_y = icon_small.y
+                    }
+                    this.setIcon(icon = {
+                        url: this.getIcon()['url'],
+                        scaledSize: new google.maps.Size(new_size_x, new_size_y)
+                    })
+                //}
             })
         }
-            if(this.zoom > 11 && this.previousZoom <= 11) {
-                $.each(this.markers, function() {
-                this.setIcon(icon = {
-                    url: this.getIcon()['url'],
-                    scaledSize: new google.maps.Size(icon_large.x, icon_large.y)
-                })
+        if(this.zoom > 11 && this.previousZoom <= 11) {
+        c('3')
+            $.each(markers, function() {
+                //if(this.getIcon()) {
+                    if(relative_size_markers) {
+                        new_size_x = this.getIcon()['scaledSize']['width'] * 2
+                        new_size_y = this.getIcon()['scaledSize']['height'] * 2
+                    }
+                    else {
+                        new_size_x = icon_large.x
+                        new_size_y = icon_large.y
+                    }
+                    this.setIcon(icon = {
+                        url: this.getIcon()['url'],
+                        scaledSize: new google.maps.Size(new_size_x, new_size_y)
+                    })
+                //}
             })
         }
         if(this.zoom <= 11 && this.previousZoom > 11) {
-            $.each(this.markers, function() {
-              this.setIcon(icon = {
-                  url: this.getIcon()['url'],
-                  scaledSize: new google.maps.Size(icon_medium.x, icon_medium.y)
-              })
+        c('4')
+            $.each(markers, function() {
+                //if(this.getIcon()) {
+                    if(relative_size_markers) {
+                        new_size_x = this.getIcon()['scaledSize']['width'] * 2
+                        new_size_y = this.getIcon()['scaledSize']['height'] * 2
+                    }
+                    else {
+                        new_size_x = icon_medium.x
+                        new_size_y = icon_medium.y
+                    }
+                    this.setIcon(icon = {
+                        url: this.getIcon()['url'],
+                        scaledSize: new google.maps.Size(new_size_x, new_size_y)
+                    })
+                //}
           })
         }
 
@@ -327,7 +388,7 @@ function initialize() {
         center: new google.maps.LatLng(53.90, -2.8),
         zoom: 3,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
-        previousZoom: 6,
+        previousZoom: 3,
         markers: markers
     })
     
@@ -447,7 +508,7 @@ $(document).ready(function() {
                 "  ?ppl rdf:type cat:Powerplant .\n" + 
                 "  ?ppl prop:Fuel_type ?ft .\n" + 
                 "} order by ?fuel_type"
-    c(query)
+    //c(query)
     $.ajax({
         url: 'http://enipedia.tudelft.nl/sparql',
         type: 'POST', 
@@ -457,7 +518,7 @@ $(document).ready(function() {
         },
         dataType: 'jsonp',
         success: function(data) {
-            c(data)
+            //c(data)
             var fuel_types_ul = document.getElementById('fuel_types')
             //c(fuel_types_select)
             var li = document.createElement('li')
@@ -482,12 +543,12 @@ $(document).ready(function() {
                 var fuel_type_checkbox = $("<input type='checkbox' name= '" + fuel_types[i].fuel_type.value.replace(new RegExp("_", "g"), " ") + "'class='lower l3 " + parent_fuel_cat + "' checked = 'true'>")
                 // Still doesn't work
                 fuel_type_checkbox.bind('change', function() {
-                    c(this)
+                    //c(this)
                     var classes = $(this).attr("class").split(" ");
-                    c(classes)
+                    //c(classes)
                     var cat = classes[classes.length - 1];
-                    c(cat)
-                    c($('input.l2#' + cat))
+                    //c(cat)
+                    //c($('input.l2#' + cat))
                     if(!$(this).prop("checked")) {
                         $('input.l2#' + cat).prop("checked", false)
                         $(':checkbox#all').prop("checked", false)
@@ -540,7 +601,16 @@ $(document).ready(function() {
             include_unknown_fuel_type = true
         }
         
-        fetchData(selected_continents, selected_countries, selected_fuel_types, include_unknown_fuel_type)
+        if($("input#toggle-relative-size").prop("checked")) {
+            var marker_sizes = "relative"
+            relative_size_markers = true
+        }
+        else {
+            var marker_sizes = "fixed"
+            relative_size_markers = false
+        }
+        
+        fetchData(selected_continents, selected_countries, selected_fuel_types, include_unknown_fuel_type, marker_sizes)
     }
     
     $("select.plants").change(function() {
