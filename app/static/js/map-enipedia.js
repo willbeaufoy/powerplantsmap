@@ -67,15 +67,18 @@ function createMarker (coordinate, iconurl, title, content, capacity, marker_siz
     
     if(marker_sizes == "relative") {
         if(map.zoom > 11) {
-            icon_dims = {x: Math.sqrt(capacity) / 3, y: Math.sqrt(capacity) / 3}
+            if(capacity > 200) icon_dims = {x: Math.sqrt(capacity) / 3, y: Math.sqrt(capacity) / 3}
+            else icon_dims = icon_small
         }
 
         else if(map.zoom > 7) {
-            icon_dims = {x: Math.sqrt(capacity) / 3, y: Math.sqrt(capacity) / 3}
+            if(capacity > 200) icon_dims = {x: Math.sqrt(capacity) / 3, y: Math.sqrt(capacity) / 3}
+            else icon_dims = icon_small
         }
 
         else {
-            icon_dims = {x: Math.sqrt(capacity) / 3, y: Math.sqrt(capacity) / 3}
+            if(capacity > 200) icon_dims = {x: Math.sqrt(capacity) / 3, y: Math.sqrt(capacity) / 3}
+            else icon_dims = icon_small
         }
     }
     
@@ -265,13 +268,13 @@ function onError(jqXHR, textStatus, errorThrown) {
 function addZoomListeners() {
 
     function change_icon_size() {
-        c('zoomCHANGED')
-        c('zoom')
-        c(this.zoom)
-        c('prevzoom')
-        c(this.previousZoom)
-        c("Relative size markers is...")
-        c(relative_size_markers)
+        //c('zoomCHANGED')
+        //c('zoom')
+        //c(this.zoom)
+        //c('prevzoom')
+        //c(this.previousZoom)
+        //c("Relative size markers is...")
+        //c(relative_size_markers)
         //c('this.markers: ')
         //c(this.markers)
         //c('markers: ')

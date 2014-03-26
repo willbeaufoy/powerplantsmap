@@ -31,9 +31,9 @@
             <select id = "continents" class="plants"></select>
             <h2>Countries</h2>
             <select id = "countries"  class="plants"></select>
-            <div id="refresh" class="btn btn-inverse">Refresh map</div>
+            <div id="refresh" class="btn btn-inverse">Refresh map</div><span>Note large data sets can take a while to load</span>
             <label>Show plants' size relative to capacity in MW (excludes all plants with no capacity data)<input type="checkbox" id="toggle-relative-size"></label>
-            <div id="toggle-l3" class="btn btn-inverse">Hide / Show subtypes</div>
+            <div id="toggle-l3" class="btn btn-inverse">Show subtypes</div>
             <ul id="fuel_types">
                 <li><label>All<input type="checkbox" id="all" class="broad" checked="true"></label>
                     <ul id="all" class="fuel_types">
@@ -54,11 +54,11 @@
                 </li>
             </ul>
         </div>
-        <div title="Hide panel" id = "close-panel-container">
-            <!-- <a data-toggle="collapse" data-target="#panel"> --><div id="close-panel" class="arrow-left"></div><!-- </a> -->
+        <div title="Hide panel" id="close-panel-container">
+            <img id="close-panel" src="static/img/close-panel.png">
         </div>
     </div>
-    <!-- <a data-toggle="collapse" data-target="#panel"> --><div title="Show panel" id="open-panel" class="arrow-right"></div><!-- </a> -->
+    <img id="open-panel" src="static/img/open-panel.png">
     <div id="map" class="map_canvas"></div>
     <div id="spinner-container"></div>
     <div class="clearfix"></div>

@@ -9,7 +9,16 @@ $(document).ready(function() {
         $('#panel').show()
     })
     
+    hide_subtypes = true
     $('#toggle-l3').click(function() {
+        if(hide_subtypes) {
+            $(this).text('Hide subtypes')
+            hide_subtypes = false
+        }
+        else {
+            $(this).text('Show subtypes')
+            hide_subtypes = true
+        }
         $('ul.l3').toggleClass("hide")
     })
 
