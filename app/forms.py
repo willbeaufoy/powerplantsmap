@@ -1,5 +1,6 @@
-from flask.ext.wtf import Form, TextField, TextAreaField, BooleanField, IntegerField, FloatField, DateField, SelectField, FormField, FieldList, SubmitField
-from flask.ext.wtf import Required, Optional
+from flask.ext.wtf import Form
+from wtforms import TextField, TextAreaField, BooleanField, IntegerField, FloatField, DateField, SelectField, FormField, FieldList, SubmitField
+from wtforms.validators import Required, Optional
 from models import Type, Subtype, Owner, Country, DataSource
 
 class LoginForm(Form):
