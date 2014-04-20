@@ -238,7 +238,7 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type,
                 }
                 content += data['results']['bindings'][i]['wikipedia_page'] ? "<a href='" + data['results']['bindings'][i]['wikipedia_page']['value'] + "'><img src='/static/img/wikipedia.ico' width=20></a><br>" : ''
                 if(data['results']['bindings'][i]['fuel_used']) {
-                    icon_url = baseurl + "static/img/markers/" + data['results']['bindings'][i]['fuel_used']['value'] + ".png"
+                    icon_url = baseurl + "static/img/markers/" + data['results']['bindings'][i]['fuel_used']['value'].replace(" ", "-").toLowerCase() + "-marker.png"
                 }
                 else {
                     icon_url = baseurl + "static/img/markers/Unknown.png" //data['results']['bindings'][i]['iconurl']

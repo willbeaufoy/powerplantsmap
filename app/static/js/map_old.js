@@ -86,7 +86,7 @@ function fetchData(country_ids, type_ids) {
 }
 
 function onError(jqXHR, textStatus, errorThrown) {
-    console.log('error')
+    console.log('errorz')
     console.log(jqXHR)
     console.log(textStatus)
     console.log(errorThrown)
