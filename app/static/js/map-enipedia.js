@@ -252,16 +252,8 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type,
             spinner.stop()
             console.log(jqxhr)
             console.log(textStatus)
-            alert( "Request Failed: try a smaller dataset" )
+            if(textStatus != "abort") alert( "Request Failed: try a smaller dataset" )
         })
-}
-
-function onError(jqXHR, textStatus, errorThrown) {
-    alert('error')
-    console.log(jqXHR)
-    console.log(textStatus)
-    console.log(errorThrown)
-    spinner.stop()
 }
 
 function addZoomListeners() {
@@ -345,13 +337,14 @@ function addZoomListeners() {
             $.each(markers, function() {
                 //if(this.getIcon()) {
                     if(relative_size_markers) {
-                        new_size_x = this.getIcon()['scaledSize']['width'] * 2
-                        new_size_y = this.getIcon()['scaledSize']['height'] * 2
+                        new_size_x = this.getIcon()['scaledSize']['width'] / 2
+                        new_size_y = this.getIcon()['scaledSize']['height'] / 2
                     }
                     else {
                         new_size_x = icon_medium.x
                         new_size_y = icon_medium.y
                     }
+
                     this.setIcon(icon = {
                         url: this.getIcon()['url'],
                         scaledSize: new google.maps.Size(new_size_x, new_size_y)
@@ -573,8 +566,9 @@ $(document).ready(function() {
     function refresh() {
 
         /* If a previous request is still ongoing, cancel it */
-        if(jqxhr_powerplants.readyState == 1) jqxhr_powerplants.abort()         
-        if(spinner) spinner.stop()
+        if(jqxhr_powerplants.readyState == 1) jqxhr_powerplants.abort()
+        // Below not needed as spinner stopped by fail function of ajax request    
+        //if(spinner) spinner.stop()
 
         for(var key in markers) {
             var marker = markers[key]
