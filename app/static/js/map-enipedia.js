@@ -2,9 +2,6 @@ var map;
 var infoWindow = new google.maps.InfoWindow();
 var baseurl = location.protocol + "//" + location.host + "/"
 var markersurl = baseurl + "static/img/markers/"
-// var icon_small = {x: 10, y: 10}
-// var icon_medium = {x: 17, y: 17}
-// var icon_large = {x: 30, y: 30}
 var icon_small = {x: 8, y: 8}
 var icon_medium = {x: 20, y: 20}
 var icon_large = {x: 30, y: 30}
