@@ -1,6 +1,12 @@
 $(document).ready(function() {
     $('#close-panel').click(function() {
         $('#panel').hide()
+
+        // Refresh map to avoid grey space
+        var evt = document.createEvent('UIEvents');
+        evt.initUIEvent('resize', true, false, window, 0);
+        window.dispatchEvent(evt);
+
         $('#open-panel').show()
     })
     
@@ -8,7 +14,7 @@ $(document).ready(function() {
         $(this).hide()
         $('#panel').show()
     })
-    
+
     hide_subtypes = true
     $('#toggle-l3').click(function() {
         if(hide_subtypes) {
