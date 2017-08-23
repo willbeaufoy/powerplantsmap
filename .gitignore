@@ -8,3 +8,7 @@ config.py
 db-setup.py
 .git
 .git/*
+bin
+include
+lib
+pip-selfcheck.json

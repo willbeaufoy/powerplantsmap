@@ -1,47 +1,45 @@
-### App to scrape power plant data from wikipedia and display it on a map
+# World Power Plants Map
 
-* List of current data sources included is in pageimporter/pageimporter.py
-* To check all sources and update them if they've changed run ./import_data.py update
-* To force update of one or many sources run ./import_data.py args where args can be 'all', or one or more country ids (from the PageImporter.pages dictionary)
+Map gets data on world power plants from [Enipedia](http://enipedia.tudelft.nl/).
+
+Usage
+----------
 
 App requires a config.py in root containing the following in order to save and display data:
 
-    import os
+```python
+import os
 
-    CSRF_ENABLED = True
-    SECRET_KEY = 'your secret key here'
+CSRF_ENABLED = True
+SECRET_KEY = 'your secret key here'
 
-    dbhost = 'your dbhost here'
-    dbname = 'your dbname here'
-    dbuser = 'your dbuser here'
-    dbpass = 'your dbpass here'
-    SQLALCHEMY_DATABASE_URI = 'mysql://' + dbuser + ':' + dbpass + '@' + dbhost + '/' + dbname
+dbhost = 'your dbhost here'
+dbname = 'your dbname here'
+dbuser = 'your dbuser here'
+dbpass = 'your dbpass here'
+SQLALCHEMY_DATABASE_URI = 'mysql://' + dbuser + ':' + dbpass + '@' + dbhost + '/' + dbname
 
-    baseurl = 'your base url here with trailing slash'
-    markersurl = baseurl + 'static/img/markers/'
+baseurl = 'your base url here with trailing slash'
+markersurl = baseurl + 'static/img/markers/'
 
-    apppath = os.path.dirname(os.path.abspath(__file__)) + '/app/'
-    markerspath = apppath + 'static/img/markers/'
-    
+apppath = os.path.dirname(os.path.abspath(__file__)) + '/app/'
+markerspath = apppath + 'static/img/markers/'
+```
 
-# Problems
+Wikipedia importer (old and unused) 
+----------------------------------------------
 
-## OSX
+- This scrapes wikipedia pages to get the world power plants data. Currently this functionality is unused as data is accessed directly via Enipedia
+- List of current data sources included is in pageimporter/pageimporter.py
+- To check all sources and update them if they've changed run ./import_data.py update
+- To force update of one or many sources run ./import_data.py args where args can be 'all', or one or more country ids (from the PageImporter.pages dictionary)
 
-### Chrome
+Enipedia importer
+-------------------------
 
-* Checkboxes are too low - http://stackoverflow.com/questions/306252/how-to-align-checkboxes-and-their-labels-consistently-cross-browsers
+To be built. Will import data from Enipedia into a local database to improve app response time.
 
-### Safari
+Issues
+----------
 
-* Checkboxes missing. If given a height they display
-
-## Windows
-
-### IE
-
-* <= 8 neither header nor map displays
-
-# Solved
-
-* Unknown type currently doesn't seem to work on its own
+- In order to be upgraded to python3, sqlalchemy will need to be replaced with something else or the configuration will need to be modified, as python-mysql, which it currently relies on, doesn't work with python3
