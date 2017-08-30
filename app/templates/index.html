@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<header>   
+<header>
     <div class="row-fluid container">
         <span id="title" class="span6">
             <h1>World power plants</h1>
@@ -34,7 +34,7 @@
             <select id = "countries"  class="plants"></select>
             <div id="refresh" class="btn btn-inverse">Refresh map</div><p style="color: #777; margin-bottom: 1em;">* Note large data sets can take a while to load</p>
             <label>Show plants' size relative to capacity in MW (excludes all plants with no capacity data)<input type="checkbox" id="toggle-relative-size"></label>
-            <div id="toggle-l3" class="btn btn-info">Show energy subtypes</div>
+            <div id="toggle-l3" class="btn btn-info">Show subtypes</div>
             <ul id="fuel_types">
                 <li><label>All<input type="checkbox" id="all" class="broad" checked="true"></label>
                     <ul id="all" class="fuel_types">

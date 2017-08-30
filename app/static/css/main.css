@@ -129,6 +129,10 @@ main li {
     z-index: 10;
 }
 
+ul#fuel_types{
+    margin-top: 10px;
+}
+
 ul#fuel_types label {
     display: inline;
 }

@@ -252,11 +252,11 @@ function fetchData(continents, countries, fuel_types, include_unknown_fuel_type,
 function addZoomListeners() {
 
     function change_icon_size() {
-        console.log('zoomCHANGED')
-        console.log('zoom')
-        console.log(this.zoom)
-        console.log('prevzoom')
-        console.log(this.previousZoom)
+        // console.log('zoomCHANGED')
+        // console.log('zoom')
+        // console.log(this.zoom)
+        // console.log('prevzoom')
+        // console.log(this.previousZoom)
         //console.log("Relative size markers is...")
         //console.log(relative_size_markers)
         //console.log('this.markers: ')
@@ -264,7 +264,7 @@ function addZoomListeners() {
         //console.log('markers: ')
         //console.log(markers)
         if(this.zoom > 7 && this.zoom <= 11 && this.previousZoom <= 7) {
-        console.log('1')
+        // console.log('1')
             $.each(markers, function() {
                 //console.log(this)
                 //if(this.getIcon()) {
@@ -288,7 +288,7 @@ function addZoomListeners() {
             })
         }
         if(this.zoom <= 7 && this.previousZoom > 7) {
-        console.log('2')
+        // console.log('2')
           $.each(markers, function() {
               //if(this.getIcon()) {
                   if(relative_size_markers) {
@@ -307,7 +307,7 @@ function addZoomListeners() {
             })
         }
         if(this.zoom > 11 && this.previousZoom <= 11) {
-        console.log('3')
+        // console.log('3')
             $.each(markers, function() {
                 //if(this.getIcon()) {
                     if(relative_size_markers) {
@@ -326,7 +326,7 @@ function addZoomListeners() {
             })
         }
         if(this.zoom <= 11 && this.previousZoom > 11) {
-        console.log('4')
+        // console.log('4')
             $.each(markers, function() {
                 //if(this.getIcon()) {
                     if(relative_size_markers) {
@@ -376,10 +376,37 @@ function initialize() {
         center: new google.maps.LatLng(53.90, -2.8),
         zoom: 3,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
-        previousZoom: 3,
+        previousZoom: 3, // Custom variable 
+        minZoom: 3,
         markers: markers
     })
-    
+
+    // Stop user from panning into the grey area outside of the map tiles
+    function checkBounds(map) {
+
+        var latNorth = map.getBounds().getNorthEast().lat();
+        var latSouth = map.getBounds().getSouthWest().lat();
+        var newLat;
+
+        if(latNorth < 85 && latSouth > -85)
+            return;
+        else {
+            if(latNorth > 85)
+                newLat =  map.getCenter().lat() - (latNorth - 85);   /* too north, centering */
+            if(latSouth < -85)
+                newLat =  map.getCenter().lat() - (latSouth + 85);   /* too south, centering */
+        }
+
+        if(newLat) {
+            var newCenter= new google.maps.LatLng(newLat, map.getCenter().lng());
+            map.setCenter(newCenter);
+        }
+    }
+
+    google.maps.event.addListener(map, 'center_changed', function() {
+        checkBounds(map);
+    });
+
 //     $('#map').height($(window).height() - $('header').outerHeight())
     $('#map').height($('#panel').outerHeight())
     
@@ -609,11 +636,11 @@ $(document).ready(function() {
     
     $("select.plants").change(function() {
         if($(this).attr('id') == "continents") {
-            $("select#countries option[value=None]").attr('selected', true)
+            $("select#countries").val('None')
         }
         else if($(this).attr('id') == "countries") {
-            $("select#continents option[value=None]").attr('selected', true)
-        }        
+            $("select#continents").val('None')
+        }
         refresh()
     })
     
